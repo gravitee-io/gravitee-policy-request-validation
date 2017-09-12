@@ -17,6 +17,7 @@ package io.gravitee.policy.requestvalidation;
 
 import io.gravitee.common.http.HttpHeaders;
 import io.gravitee.common.http.HttpStatusCode;
+import io.gravitee.common.util.MultiValueMap;
 import io.gravitee.gateway.api.ExecutionContext;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
@@ -78,8 +79,8 @@ public class RequestValidationPolicyTest {
     @Test
     public void shouldValidateQueryParameter() {
         // Prepare inbound request
-        Map<String, String> parameters = mock(Map.class);
-        when(parameters.get("my-param")).thenReturn("my-value");
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
+        when(parameters.get("my-param")).thenReturn(Collections.singletonList("my-value"));
         when(request.parameters()).thenReturn(parameters);
 
         // Prepare template engine
@@ -107,7 +108,7 @@ public class RequestValidationPolicyTest {
     @Test
     public void shouldNotValidateQueryParameter_notNull() {
         // Prepare inbound request
-        Map<String, String> parameters = mock(Map.class);
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(request.parameters()).thenReturn(parameters);
 
         // Prepare template engine
@@ -141,7 +142,7 @@ public class RequestValidationPolicyTest {
     @Test
     public void shouldNotValidateQueryParameter_invalidMinConstraint() {
         // Prepare inbound request
-        Map<String, String> parameters = mock(Map.class);
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(request.parameters()).thenReturn(parameters);
 
         // Prepare template engine
@@ -176,8 +177,8 @@ public class RequestValidationPolicyTest {
     @Test
     public void shouldValidateQueryParameter_multipleRules() {
         // Prepare inbound request
-        Map<String, String> parameters = mock(Map.class);
-        when(parameters.get("my-param")).thenReturn("80");
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
+        when(parameters.get("my-param")).thenReturn(Collections.singletonList("80"));
         when(request.parameters()).thenReturn(parameters);
 
         HttpHeaders headers = mock(HttpHeaders.class);
