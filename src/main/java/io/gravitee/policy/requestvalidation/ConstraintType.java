@@ -27,7 +27,8 @@ public enum ConstraintType {
     MAIL(MailConstraintValidator.class),
     PATTERN(PatternConstraintValidator.class),
     MIN(MinConstraintValidator.class),
-    MAX(MaxConstraintValidator.class);
+    MAX(MaxConstraintValidator.class),
+    SIZE(SizeConstraintValidator.class);
 
     private Class<? extends ConstraintValidator> validator;
 
