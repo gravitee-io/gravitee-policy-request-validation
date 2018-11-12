@@ -23,9 +23,15 @@ import io.gravitee.common.http.MediaType;
 import io.gravitee.gateway.api.ExecutionContext;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
+import io.gravitee.gateway.api.buffer.Buffer;
+import io.gravitee.gateway.api.stream.BufferedReadWriteStream;
+import io.gravitee.gateway.api.stream.ReadWriteStream;
+import io.gravitee.gateway.api.stream.SimpleReadWriteStream;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
 import io.gravitee.policy.api.annotations.OnRequest;
+import io.gravitee.policy.api.annotations.OnRequestContent;
+import io.gravitee.policy.requestvalidation.configuration.PolicyScope;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.validator.ExpressionBasedValidator;
 
@@ -46,6 +52,9 @@ public class RequestValidationPolicy {
     private final static String FIELD_MESSAGE = "message";
     private final static String FIELD_CONSTRAINTS = "constraints";
     private final static String DEFAULT_MESSAGE = "Request is not valid according to constraint rules";
+
+    private final static String REQUEST_VARIABLE = "request";
+
     /**
      * Create a new policy instance based on its associated configuration
      *
@@ -57,34 +66,59 @@ public class RequestValidationPolicy {
 
     @OnRequest
     public void onRequest(Request request, Response response, ExecutionContext executionContext, PolicyChain policyChain) {
-        if (configuration.getRules() != null && !configuration.getRules().isEmpty()) {
+        if ((configuration.getScope() == null || configuration.getScope() == PolicyScope.REQUEST)
+                && (configuration.getRules() != null && !configuration.getRules().isEmpty())) {
             Set<ConstraintViolation> violations = validate(executionContext);
 
             if (violations.isEmpty()) {
                 policyChain.doNext(request, response);
             } else {
-                ObjectMapper mapper = new ObjectMapper();
-                ObjectNode responseNode = mapper.createObjectNode();
-                responseNode.put(FIELD_MESSAGE, DEFAULT_MESSAGE);
-                ArrayNode constraintsNode = responseNode.putArray(FIELD_CONSTRAINTS);
-                violations.forEach(constraintViolation -> constraintsNode.add(constraintViolation.getMessage()));
-
-                String message;
-
-                try {
-                    message = mapper.writeValueAsString(responseNode);
-                } catch (JsonProcessingException jpe) {
-                    message = jpe.getMessage();
-                }
-
                 policyChain.failWith(PolicyResult.failure(
                         configuration.getStatus(),
-                        message,
+                        createErrorPayload(violations),
                         MediaType.APPLICATION_JSON));
             }
         } else {
             policyChain.doNext(request, response);
         }
+    }
+
+    @OnRequestContent
+    public ReadWriteStream onRequestContent(Request request, ExecutionContext executionContext, PolicyChain policyChain) {
+        if (configuration.getScope() != null && configuration.getScope() == PolicyScope.REQUEST_CONTENT) {
+            return new BufferedReadWriteStream() {
+
+                Buffer buffer = Buffer.buffer();
+
+                @Override
+                public SimpleReadWriteStream<Buffer> write(Buffer content) {
+                    buffer.appendBuffer(content);
+                    return this;
+                }
+
+                @Override
+                public void end() {
+                    String content = buffer.toString();
+                    executionContext.getTemplateEngine().getTemplateContext()
+                            .setVariable(REQUEST_VARIABLE, new EvaluableRequest(request, content));
+
+                    // Apply validation rules
+                    Set<ConstraintViolation> violations = validate(executionContext);
+
+                    if (!violations.isEmpty()) {
+                        policyChain.streamFailWith(PolicyResult.failure(
+                                configuration.getStatus(),
+                                createErrorPayload(violations),
+                                MediaType.APPLICATION_JSON));
+                    } else {
+                        super.write(buffer);
+                        super.end();
+                    }
+                }
+            };
+        }
+
+        return null;
     }
 
     private Set<ConstraintViolation> validate(ExecutionContext executionContext) {
@@ -99,5 +133,19 @@ public class RequestValidationPolicy {
         }
 
         return violations;
+    }
+
+    private String createErrorPayload(Set<ConstraintViolation> violations) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode responseNode = mapper.createObjectNode();
+        responseNode.put(FIELD_MESSAGE, DEFAULT_MESSAGE);
+        ArrayNode constraintsNode = responseNode.putArray(FIELD_CONSTRAINTS);
+        violations.forEach(constraintViolation -> constraintsNode.add(constraintViolation.getMessage()));
+
+        try {
+            return mapper.writeValueAsString(responseNode);
+        } catch (JsonProcessingException jpe) {
+            return jpe.getMessage();
+        }
     }
 }
