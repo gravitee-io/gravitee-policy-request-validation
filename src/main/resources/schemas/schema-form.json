@@ -2,6 +2,13 @@
   "type" : "object",
   "id" : "urn:jsonschema:io:gravitee:policy:requestvalidation:configuration:RequestValidationPolicyConfiguration",
   "properties" : {
+    "scope" : {
+      "title": "Scope",
+      "description": "Execute policy on <strong>request</strong> or <strong>request-content</strong> phase.",
+      "type" : "string",
+      "default": "REQUEST",
+      "enum" : [ "REQUEST", "REQUEST_CONTENT" ]
+    },
     "status" : {
       "title": "Status Code",
       "description": "HTTP Status Code send to the consumer in case of validation issues",
@@ -122,7 +129,7 @@
           "input" : {
             "type" : "string",
             "title": "Field value",
-            "description": "The input value to validate (support EL)"
+            "description": "The input value to validate (supports EL)"
           },
           "constraint" : {
             "type" : "object",
@@ -142,7 +149,7 @@
                 "items" : {
                   "type" : "string",
                   "title": "Parameter",
-                  "description": "Must be defined for MIN, MAX or PATTERN constraints."
+                  "description": "Must be defined for MIN, MAX or PATTERN constraints (supports EL)"
                 }
               },
               "message" : {

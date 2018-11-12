@@ -27,7 +27,7 @@ import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.el.EvaluableRequest;
-import io.gravitee.reporter.api.http.RequestMetrics;
+import io.gravitee.reporter.api.http.Metrics;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Map;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
@@ -73,7 +72,7 @@ public class RequestValidationPolicyTest {
 
         policy = new RequestValidationPolicy(configuration);
         when(configuration.getStatus()).thenReturn(HttpStatusCode.BAD_REQUEST_400);
-        when(request.metrics()).thenReturn(RequestMetrics.on(System.currentTimeMillis()).build());
+        when(request.metrics()).thenReturn(Metrics.on(System.currentTimeMillis()).build());
     }
 
     @Test

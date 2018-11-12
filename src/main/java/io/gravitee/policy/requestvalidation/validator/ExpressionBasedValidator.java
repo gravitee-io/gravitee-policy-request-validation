@@ -19,6 +19,8 @@ import io.gravitee.gateway.api.expression.TemplateEngine;
 import io.gravitee.policy.requestvalidation.Constraint;
 import io.gravitee.policy.requestvalidation.ConstraintViolation;
 
+import java.util.Arrays;
+
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
  * @author GraviteeSource Team
@@ -33,6 +35,13 @@ public class ExpressionBasedValidator extends DefaultValidator {
 
     @Override
     public ConstraintViolation validate(String input, Constraint constraint) {
+        if (constraint.getParameters() != null) {
+            constraint.setParameters(Arrays
+                    .stream(constraint.getParameters())
+                    .map(templateEngine::convert)
+                    .toArray(String[]::new));
+        }
+
         return super.validate(templateEngine.convert(input), constraint);
     }
 }

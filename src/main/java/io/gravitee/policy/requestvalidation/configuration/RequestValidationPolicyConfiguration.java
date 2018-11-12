@@ -27,6 +27,8 @@ import java.util.List;
  */
 public class RequestValidationPolicyConfiguration implements PolicyConfiguration {
 
+    private PolicyScope scope = PolicyScope.REQUEST;
+
     private int status = HttpStatusCode.BAD_REQUEST_400;
 
     private List<Rule> rules;
@@ -45,5 +47,13 @@ public class RequestValidationPolicyConfiguration implements PolicyConfiguration
 
     public void setRules(List<Rule> rules) {
         this.rules = rules;
+    }
+
+    public PolicyScope getScope() {
+        return scope;
+    }
+
+    public void setScope(PolicyScope scope) {
+        this.scope = scope;
     }
 }

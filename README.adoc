@@ -7,11 +7,15 @@ endif::[]
 
 == Phase
 
-[cols="2*", options="header"]
+[cols="4*", options="header"]
 |===
 ^|onRequest
 ^|onResponse
+^|onRequestContent
+^|onResponseContent
 
+^.^| X
+^.^|
 ^.^| X
 ^.^|
 
@@ -38,6 +42,12 @@ By default, if one of the rule can not be validated, the policy returns a `400` 
 
 |===
 |Property |Required |Description |Type |Default
+
+.^|scope
+^.^|X
+|Policy scope from where the policy is executed
+^.^|Policy scope
+^.^|ON_REQUEST
 
 .^|status
 ^.^|X
