@@ -18,11 +18,10 @@ package io.gravitee.policy.requestvalidation;
 import io.gravitee.common.http.HttpHeaders;
 import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.common.util.MultiValueMap;
+import io.gravitee.el.TemplateEngine;
 import io.gravitee.gateway.api.ExecutionContext;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
-import io.gravitee.gateway.api.expression.TemplateEngine;
-import io.gravitee.gateway.el.SpelTemplateEngine;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
@@ -83,7 +82,7 @@ public class RequestValidationPolicyTest {
         when(request.parameters()).thenReturn(parameters);
 
         // Prepare template engine
-        TemplateEngine engine = new SpelTemplateEngine();
+        TemplateEngine engine = TemplateEngine.templateEngine();
         engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
 
         when(executionContext.getTemplateEngine()).thenReturn(engine);
@@ -111,7 +110,7 @@ public class RequestValidationPolicyTest {
         when(request.parameters()).thenReturn(parameters);
 
         // Prepare template engine
-        TemplateEngine engine = new SpelTemplateEngine();
+        TemplateEngine engine = TemplateEngine.templateEngine();
         engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
 
         when(executionContext.getTemplateEngine()).thenReturn(engine);
@@ -145,7 +144,7 @@ public class RequestValidationPolicyTest {
         when(request.parameters()).thenReturn(parameters);
 
         // Prepare template engine
-        TemplateEngine engine = new SpelTemplateEngine();
+        TemplateEngine engine = TemplateEngine.templateEngine();
         engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
 
         when(executionContext.getTemplateEngine()).thenReturn(engine);
@@ -185,7 +184,7 @@ public class RequestValidationPolicyTest {
         when(request.headers()).thenReturn(headers);
 
         // Prepare template engine
-        TemplateEngine engine = new SpelTemplateEngine();
+        TemplateEngine engine = TemplateEngine.templateEngine();
         engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
 
         when(executionContext.getTemplateEngine()).thenReturn(engine);

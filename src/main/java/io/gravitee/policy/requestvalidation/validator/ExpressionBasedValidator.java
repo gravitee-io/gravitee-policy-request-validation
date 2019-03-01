@@ -15,7 +15,7 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import io.gravitee.gateway.api.expression.TemplateEngine;
+import io.gravitee.el.TemplateEngine;
 import io.gravitee.policy.requestvalidation.Constraint;
 import io.gravitee.policy.requestvalidation.ConstraintViolation;
 
