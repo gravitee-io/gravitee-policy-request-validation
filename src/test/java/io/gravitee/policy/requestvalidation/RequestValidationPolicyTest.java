@@ -23,23 +23,19 @@ import io.gravitee.gateway.api.ExecutionContext;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
 import io.gravitee.policy.api.PolicyChain;
-import io.gravitee.policy.api.PolicyResult;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.el.EvaluableRequest;
-import io.gravitee.reporter.api.http.Metrics;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
@@ -67,11 +63,8 @@ public class RequestValidationPolicyTest {
 
     @Before
     public void init() {
-        initMocks(this);
-
         policy = new RequestValidationPolicy(configuration);
         when(configuration.getStatus()).thenReturn(HttpStatusCode.BAD_REQUEST_400);
-        when(request.metrics()).thenReturn(Metrics.on(System.currentTimeMillis()).build());
     }
 
     @Test
@@ -128,13 +121,7 @@ public class RequestValidationPolicyTest {
         policy.onRequest(request, response, executionContext, policyChain);
 
         // Check results
-        verify(policyChain).failWith(argThat(new ArgumentMatcher<PolicyResult>() {
-            @Override
-            public boolean matches(Object argument) {
-                PolicyResult result = (PolicyResult) argument;
-                return result.isFailure() && result.httpStatusCode() == HttpStatusCode.BAD_REQUEST_400;
-            }
-        }));
+        verify(policyChain).failWith(argThat(result -> result.isFailure() && result.httpStatusCode() == HttpStatusCode.BAD_REQUEST_400));
     }
 
     @Test
@@ -163,13 +150,7 @@ public class RequestValidationPolicyTest {
         policy.onRequest(request, response, executionContext, policyChain);
 
         // Check results
-        verify(policyChain).failWith(argThat(new ArgumentMatcher<PolicyResult>() {
-            @Override
-            public boolean matches(Object argument) {
-                PolicyResult result = (PolicyResult) argument;
-                return result.isFailure() && result.httpStatusCode() == HttpStatusCode.BAD_REQUEST_400;
-            }
-        }));
+        verify(policyChain).failWith(argThat(result -> result.isFailure() && result.httpStatusCode() == HttpStatusCode.BAD_REQUEST_400));
     }
 
     @Test
