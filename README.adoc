@@ -82,12 +82,30 @@ By default, if one of the rule can not be validated, the policy returns a `400` 
 }
 ----
 
-== Http Status Code
+== Errors
 
+=== Default error
 |===
 |Code |Message
 
 .^| ```400```
 | Incoming HTTP request can not be validated.
+
+|===
+
+=== Override errors
+If you're looking to override the default response provided by the policy, you can do it
+thanks to the response templates feature. These templates must be define at the API level (see `Response Templates`
+from the `Proxy` menu).
+
+Here are the error keys send by this policy:
+
+[cols="2*", options="header"]
+|===
+^|Key
+^|Parameters
+
+.^|REQUEST_VALIDATION_INVALID
+^.^|violations
 
 |===

@@ -121,7 +121,7 @@ public class RequestValidationPolicyTest {
         policy.onRequest(request, response, executionContext, policyChain);
 
         // Check results
-        verify(policyChain).failWith(argThat(result -> result.isFailure() && result.httpStatusCode() == HttpStatusCode.BAD_REQUEST_400));
+        verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class RequestValidationPolicyTest {
         policy.onRequest(request, response, executionContext, policyChain);
 
         // Check results
-        verify(policyChain).failWith(argThat(result -> result.isFailure() && result.httpStatusCode() == HttpStatusCode.BAD_REQUEST_400));
+        verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
     }
 
     @Test
