@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.gravitee.common.http.MediaType;
+import io.gravitee.common.util.Maps;
 import io.gravitee.gateway.api.ExecutionContext;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
@@ -36,7 +36,10 @@ import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolic
 import io.gravitee.policy.requestvalidation.validator.ExpressionBasedValidator;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
@@ -54,6 +57,8 @@ public class RequestValidationPolicy {
     private final static String DEFAULT_MESSAGE = "Request is not valid according to constraint rules";
 
     private final static String REQUEST_VARIABLE = "request";
+
+    private static final String REQUEST_VALIDATION_INVALID = "REQUEST_VALIDATION_INVALID";
 
     /**
      * Create a new policy instance based on its associated configuration
@@ -73,10 +78,14 @@ public class RequestValidationPolicy {
             if (violations.isEmpty()) {
                 policyChain.doNext(request, response);
             } else {
+                final List<String> messageViolations = violations.stream().map(ConstraintViolation::getMessage).collect(toList());
                 policyChain.failWith(PolicyResult.failure(
+                        REQUEST_VALIDATION_INVALID,
                         configuration.getStatus(),
                         createErrorPayload(violations),
-                        MediaType.APPLICATION_JSON));
+                        Maps.<String, Object>builder()
+                                .put("violations", messageViolations)
+                                .build()));
             }
         } else {
             policyChain.doNext(request, response);
@@ -106,10 +115,14 @@ public class RequestValidationPolicy {
                     Set<ConstraintViolation> violations = validate(executionContext);
 
                     if (!violations.isEmpty()) {
+                        final List<String> messageViolations = violations.stream().map(ConstraintViolation::getMessage).collect(toList());
                         policyChain.streamFailWith(PolicyResult.failure(
+                                REQUEST_VALIDATION_INVALID,
                                 configuration.getStatus(),
                                 createErrorPayload(violations),
-                                MediaType.APPLICATION_JSON));
+                                Maps.<String, Object>builder()
+                                        .put("violations", messageViolations)
+                                        .build()));
                     } else {
                         super.write(buffer);
                         super.end();
