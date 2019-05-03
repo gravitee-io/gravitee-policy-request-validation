@@ -40,6 +40,9 @@ public class PatternConstraintValidator extends StringConstraintValidator {
 
     @Override
     public boolean isValid(String value) {
+    	if(value == null) {
+    		return false;
+    	}
         return init && pattern.matcher(value).find();
     }
 
