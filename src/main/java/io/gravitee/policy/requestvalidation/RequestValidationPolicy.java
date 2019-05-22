@@ -79,6 +79,7 @@ public class RequestValidationPolicy {
                 policyChain.doNext(request, response);
             } else {
                 final List<String> messageViolations = violations.stream().map(ConstraintViolation::getMessage).collect(toList());
+                executionContext.request().metrics().setErrorKey(REQUEST_VALIDATION_INVALID);
                 policyChain.failWith(PolicyResult.failure(
                         REQUEST_VALIDATION_INVALID,
                         configuration.getStatus(),
@@ -116,6 +117,7 @@ public class RequestValidationPolicy {
 
                     if (!violations.isEmpty()) {
                         final List<String> messageViolations = violations.stream().map(ConstraintViolation::getMessage).collect(toList());
+                        executionContext.request().metrics().setErrorKey(REQUEST_VALIDATION_INVALID);
                         policyChain.streamFailWith(PolicyResult.failure(
                                 REQUEST_VALIDATION_INVALID,
                                 configuration.getStatus(),
