@@ -194,4 +194,34 @@ public class RequestValidationPolicyTest {
         // Check results
         verify(policyChain).doNext(request, response);
     }
+
+    @Test
+    public void shouldValidateQueryParameter_RuleWithParamsContainsNull() {
+        // Prepare inbound request
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
+        when(parameters.get("my-param")).thenReturn(Collections.singletonList("80"));
+        when(request.parameters()).thenReturn(parameters);
+
+        // Prepare template engine
+        TemplateEngine engine = TemplateEngine.templateEngine();
+        engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
+
+        when(executionContext.getTemplateEngine()).thenReturn(engine);
+
+        // Prepare constraint rule
+        Rule rule = new Rule();
+        rule.setInput("{#request.params['my-param']}");
+        Constraint constraint = new Constraint();
+        constraint.setType(ConstraintType.NOT_NULL);
+        constraint.setParameters(new String[]{null});
+        rule.setConstraint(constraint);
+
+        when(configuration.getRules()).thenReturn(Collections.singletonList(rule));
+
+        // Execute policy
+        policy.onRequest(request, response, executionContext, policyChain);
+
+        // Check results
+        verify(policyChain).doNext(request, response);
+    }
 }
