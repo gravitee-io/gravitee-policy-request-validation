@@ -49,4 +49,5 @@ public class SizeConstraintValidator extends StringConstraintValidator {
     public String getMessageTemplate() {
         return "'%s' length must be higher or equals to '%s' and lower or equals to '%s'";
     }
+
 }

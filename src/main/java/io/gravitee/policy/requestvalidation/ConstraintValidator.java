@@ -26,4 +26,5 @@ public interface ConstraintValidator<T> {
     boolean isValid(T value);
 
     String getMessageTemplate();
+
 }
