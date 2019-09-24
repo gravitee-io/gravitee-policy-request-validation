@@ -50,4 +50,5 @@ public class PatternConstraintValidator extends StringConstraintValidator {
     public String getMessageTemplate() {
         return "'%s' is not valid (pattern: '%s')";
     }
+
 }

@@ -25,14 +25,16 @@ import io.gravitee.gateway.api.Response;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.el.EvaluableRequest;
+import io.gravitee.policy.requestvalidation.validator.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
+import java.util.regex.Pattern;
 
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
@@ -224,4 +226,88 @@ public class RequestValidationPolicyTest {
         // Check results
         verify(policyChain).doNext(request, response);
     }
+
+    public Rule prepareRule(String input, String[] params, ConstraintType constraintType){
+        Rule rule = new Rule();
+        rule.setInput(input);
+        Constraint constraint = new Constraint();
+        constraint.setType(constraintType);
+        constraint.setParameters(params);
+        rule.setConstraint(constraint);
+        return rule;
+    }
+
+    @Test
+    public void shouldValidateTheOrderOfViolationsWhenUsingMultipleRules() {
+
+        final String RULE_VALUE = "{#request.headers['my-header']}";
+        final String PATTERN = "^[0-9a-fA-F]{32}\\z";
+
+        HttpHeaders headers = mock(HttpHeaders.class);
+        when(headers.get("my-header")).thenReturn(null);
+        when(request.headers()).thenReturn(headers);
+
+        // Prepare template engine
+        TemplateEngine engine = TemplateEngine.templateEngine();
+        engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
+
+        when(executionContext.getTemplateEngine()).thenReturn(engine);
+
+        HashMap<Class, String> validatorRegexMap = new HashMap<>();
+        validatorRegexMap.put(NotNullConstraintValidator.class, "^'\\w+' can not be null.$");
+        validatorRegexMap.put(PatternConstraintValidator.class, "^'.+' is not valid \\(pattern: '.+'\\)$");
+        validatorRegexMap.put(MinConstraintValidator.class, "^'.+' must be higher or equals to '\\d+'");
+        validatorRegexMap.put(MaxConstraintValidator.class, "^'.+' must be lower or equals to '\\d+'");
+        validatorRegexMap.put(SizeConstraintValidator.class, "'.+' length must be higher or equals to '\\d+' and lower or equals to '\\d+'");
+        validatorRegexMap.put(MailConstraintValidator.class, "^.+ is not a valid email.$");
+
+        LinkedHashMap<Rule, ConstraintValidator> rulesMap = new LinkedHashMap<>();
+        rulesMap.put(
+            prepareRule(RULE_VALUE, new String[]{"*"}, ConstraintType.NOT_NULL),
+            new NotNullConstraintValidator()
+        );
+        rulesMap.put(
+            prepareRule(RULE_VALUE, new String[]{PATTERN}, ConstraintType.PATTERN),
+            new PatternConstraintValidator()
+        );
+        rulesMap.put(
+            prepareRule(RULE_VALUE, new String[]{"5"}, ConstraintType.MIN),
+            new MinConstraintValidator()
+        );
+        rulesMap.put(
+            prepareRule(RULE_VALUE, new String[]{"5"}, ConstraintType.MAX),
+            new MaxConstraintValidator()
+        );
+        rulesMap.put(
+            prepareRule(RULE_VALUE, new String[]{"5","10"}, ConstraintType.SIZE),
+            new SizeConstraintValidator()
+        );
+        rulesMap.put(
+            prepareRule(RULE_VALUE, new String[]{"wrong-mail"}, ConstraintType.MAIL),
+            new MailConstraintValidator()
+        );
+
+        ArrayList<Rule> rules = new ArrayList<>(rulesMap.keySet());
+        when(configuration.getRules()).thenReturn(rules);
+
+        // Execute policy
+        policy.onRequest(request, response, executionContext, policyChain);
+
+        // Check results
+        verify(policyChain).failWith(
+            argThat(result -> {
+                ArrayList<String> violationsTemp = (ArrayList<String>) result.parameters().get("violations");
+                ArrayDeque<String> violations = new ArrayDeque<>(violationsTemp);
+
+                rulesMap.entrySet().stream().forEach(ruleMapEntry -> {
+                    ConstraintValidator validator = ruleMapEntry.getValue();
+                    String violation = violations.pollFirst();
+                    Assert.assertTrue(Pattern.matches(validatorRegexMap.get(validator.getClass()), violation));
+                });
+
+                return result.statusCode() == HttpStatusCode.BAD_REQUEST_400;
+            })
+        );
+    }
+
 }
