@@ -41,4 +41,5 @@ public class MailConstraintValidator extends PatternConstraintValidator {
     public String getMessageTemplate() {
         return "%s is not a valid email.";
     }
+
 }
