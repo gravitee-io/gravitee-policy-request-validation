@@ -15,6 +15,9 @@
  */
 package io.gravitee.policy.requestvalidation;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
  * @author GraviteeSource Team
@@ -28,7 +31,11 @@ public class Constraint {
     private String message;
 
     public String[] getParameters() {
-        return parameters;
+        if (parameters == null || parameters.length == 0) {
+            return parameters;
+        } else {
+            return Arrays.stream(parameters).filter(Objects::nonNull).toArray(String[]::new);
+        }
     }
 
     public void setParameters(String[] parameters) {
