@@ -30,14 +30,14 @@
     <parent>
         <groupId>io.gravitee</groupId>
         <artifactId>gravitee-parent</artifactId>
-        <version>16</version>
+        <version>17</version>
     </parent>
 
     <properties>
         <gravitee-gateway-api.version>1.16.1</gravitee-gateway-api.version>
         <gravitee-policy-api.version>1.5.0</gravitee-policy-api.version>
         <gravitee-gateway.version>1.21.0</gravitee-gateway.version>
-        <gravitee-common.version>1.15.0</gravitee-common.version>
+        <gravitee-common.version>1.15.2</gravitee-common.version>
 
         <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
     </properties>
