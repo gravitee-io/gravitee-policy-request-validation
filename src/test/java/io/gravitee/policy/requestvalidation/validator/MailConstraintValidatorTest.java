@@ -55,4 +55,12 @@ public class MailConstraintValidatorTest {
         boolean valid = validator.isValid("contact@graviteesource.com");
         Assert.assertTrue(valid);
     }
+
+    @Test
+    public void shouldValidateEncoded() {
+        MailConstraintValidator validator = new MailConstraintValidator();
+
+        boolean valid = validator.isValid("contact%40graviteesource.com");
+        Assert.assertTrue(valid);
+    }
 }
