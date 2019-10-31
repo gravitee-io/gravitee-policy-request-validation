@@ -125,7 +125,10 @@ public class RequestValidationPolicy {
                                         .put("violations", messageViolations)
                                         .build()));
                     } else {
-                        super.write(buffer);
+                        if (buffer.length() > 0) {
+                            super.write(buffer);
+                        }
+
                         super.end();
                     }
                 }
