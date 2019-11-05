@@ -30,4 +30,5 @@ public class NotNullConstraintValidator extends StringConstraintValidator {
     public String getMessageTemplate() {
         return "'%s' can not be null.";
     }
+
 }

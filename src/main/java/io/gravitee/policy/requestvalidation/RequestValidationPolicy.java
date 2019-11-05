@@ -36,6 +36,7 @@ import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolic
 import io.gravitee.policy.requestvalidation.validator.ExpressionBasedValidator;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -124,7 +125,10 @@ public class RequestValidationPolicy {
                                         .put("violations", messageViolations)
                                         .build()));
                     } else {
-                        super.write(buffer);
+                        if (buffer.length() > 0) {
+                            super.write(buffer);
+                        }
+
                         super.end();
                     }
                 }
@@ -135,7 +139,7 @@ public class RequestValidationPolicy {
     }
 
     private Set<ConstraintViolation> validate(ExecutionContext executionContext) {
-        Set<ConstraintViolation> violations = new HashSet<>();
+        LinkedHashSet<ConstraintViolation> violations = new LinkedHashSet<>();
 
         for(Rule rule : configuration.getRules()) {
             Validator validator = new ExpressionBasedValidator(executionContext.getTemplateEngine());
