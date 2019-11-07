@@ -45,4 +45,5 @@ public class MinConstraintValidator extends NumberConstraintValidator {
     public String getMessageTemplate() {
         return "'%s' must be higher or equals to '%s'";
     }
+
 }
