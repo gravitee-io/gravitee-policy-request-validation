@@ -35,9 +35,10 @@
 
     <properties>
         <gravitee-gateway-api.version>1.16.1</gravitee-gateway-api.version>
-        <gravitee-policy-api.version>1.5.0</gravitee-policy-api.version>
+        <gravitee-policy-api.version>1.7.0-SNAPSHOT</gravitee-policy-api.version>
         <gravitee-gateway.version>1.21.0</gravitee-gateway.version>
         <gravitee-common.version>1.15.2</gravitee-common.version>
+        <swagger-parser.version>2.0.14</swagger-parser.version>
 
         <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
     </properties>
@@ -62,6 +63,14 @@
             <groupId>io.gravitee.common</groupId>
             <artifactId>gravitee-common</artifactId>
             <version>${gravitee-common.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.swagger.parser.v3</groupId>
+            <artifactId>swagger-parser</artifactId>
+            <version>${swagger-parser.version}</version>
             <scope>provided</scope>
         </dependency>
 
