@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.gravitee.common.util.Maps;
+import io.gravitee.el.TemplateEngine;
 import io.gravitee.gateway.api.ExecutionContext;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
@@ -35,7 +36,6 @@ import io.gravitee.policy.requestvalidation.configuration.PolicyScope;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.validator.ExpressionBasedValidator;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +60,7 @@ public class RequestValidationPolicy {
     private final static String REQUEST_VARIABLE = "request";
 
     private static final String REQUEST_VALIDATION_INVALID = "REQUEST_VALIDATION_INVALID";
+
 
     /**
      * Create a new policy instance based on its associated configuration
@@ -140,12 +141,16 @@ public class RequestValidationPolicy {
 
     private Set<ConstraintViolation> validate(ExecutionContext executionContext) {
         LinkedHashSet<ConstraintViolation> violations = new LinkedHashSet<>();
+        for (Rule rule : configuration.getRules()) {
 
-        for(Rule rule : configuration.getRules()) {
-            Validator validator = new ExpressionBasedValidator(executionContext.getTemplateEngine());
-            ConstraintViolation constraintViolation = validator.validate(rule.getInput(), rule.getConstraint());
-            if (constraintViolation != null) {
-                violations.add(constraintViolation);
+            TemplateEngine templateEngine = executionContext.getTemplateEngine();
+            String input = templateEngine.getValue(rule.getInput(), String.class);
+            if (rule.getIsRequired() || (input != null && !input.isEmpty())) {
+                Validator validator = new ExpressionBasedValidator(executionContext.getTemplateEngine());
+                ConstraintViolation constraintViolation = validator.validate(rule.getInput(), rule.getConstraint());
+                if (constraintViolation != null) {
+                    violations.add(constraintViolation);
+                }
             }
         }
 

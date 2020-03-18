@@ -23,6 +23,8 @@ public class Rule {
 
     private String input;
 
+    private boolean isRequired = true;
+
     private Constraint constraint;
 
     public String getInput() {
@@ -40,4 +42,8 @@ public class Rule {
     public void setConstraint(Constraint constraint) {
         this.constraint = constraint;
     }
+
+    public boolean getIsRequired() { return isRequired; }
+
+    public void setIsRequired(boolean isRequired) { this.isRequired = isRequired;}
 }

@@ -129,6 +129,12 @@
             "title": "Field value",
             "description": "The input value to validate (supports EL)"
           },
+          "isRequired" : {
+            "type" : "boolean",
+            "title": "Required",
+            "description": "If true, check the pattern always. If false check the pattern, only if this one is present in the request",
+            "default": true
+          },
           "constraint" : {
             "type" : "object",
             "title" : "Constraint",
