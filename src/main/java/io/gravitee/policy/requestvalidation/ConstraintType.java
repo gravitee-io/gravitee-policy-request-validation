@@ -28,7 +28,8 @@ public enum ConstraintType {
     PATTERN(PatternConstraintValidator.class),
     MIN(MinConstraintValidator.class),
     MAX(MaxConstraintValidator.class),
-    SIZE(SizeConstraintValidator.class);
+    SIZE(SizeConstraintValidator.class),
+    ENUM(EnumConstraintValidator.class);
 
     private Class<? extends ConstraintValidator> validator;
 

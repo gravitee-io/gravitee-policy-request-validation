@@ -35,6 +35,7 @@ Constraint rules can be:
 * MAIL: Input value is valid according to the mail pattern.
 * PATTERN: Input value is valid according to the pattern given as a parameter.
 * SIZE: Input value length is between two given parameters.
+* ENUM: Field value included in ENUM.
 
 By default, if one of the rule can not be validated, the policy returns a `400` status code.
 

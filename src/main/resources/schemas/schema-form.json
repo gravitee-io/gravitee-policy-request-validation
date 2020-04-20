@@ -142,10 +142,10 @@
             "properties" : {
               "type" : {
                 "type" : "string",
-                "enum" : [ "NOT_NULL", "MIN", "MAX", "MAIL", "PATTERN", "SIZE" ],
+                "enum" : [ "NOT_NULL", "MIN", "MAX", "MAIL", "PATTERN", "SIZE", "ENUM" ],
                 "default": "NOT_NULL",
                 "title": "Type",
-                "description": "The constraint rule to apply to the field value.<ul><li>NOT_NULL: Field value is required</li><li>MIN: Field number value is greater or equals than parameter</li><li>MAX: Field number value is lower or equals than parameter</li><li>MAIL: Field value is a valid email</li><li>PATTERN: Field value is valid according to the pattern parameter</li><li>SIZE: Field value length is between min and max parameters</li><ul/>"
+                "description": "The constraint rule to apply to the field value.<ul><li>NOT_NULL: Field value is required</li><li>MIN: Field number value is greater or equals than parameter</li><li>MAX: Field number value is lower or equals than parameter</li><li>MAIL: Field value is a valid email</li><li>PATTERN: Field value is valid according to the pattern parameter</li><li>SIZE: Field value length is between min and max parameters</li><li>ENUM: Field value included in ENUM</li><ul/>"
               },
               "parameters" : {
                 "type" : "array",
