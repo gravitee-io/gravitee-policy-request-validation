@@ -36,7 +36,9 @@ import io.gravitee.policy.requestvalidation.configuration.PolicyScope;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.validator.ExpressionBasedValidator;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
