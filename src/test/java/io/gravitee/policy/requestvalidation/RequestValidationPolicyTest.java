@@ -198,6 +198,34 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
+    public void shouldValidatePathParameter_el_Rule() {
+        // Prepare inbound request
+        when(request.pathInfo()).thenReturn("/fr");
+
+        // Prepare template engine
+        TemplateEngine engine = TemplateEngine.templateEngine();
+        engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
+
+        when(executionContext.getTemplateEngine()).thenReturn(engine);
+
+        // Prepare constraint rule
+        Rule rule = new Rule();
+        rule.setInput("{#request.pathInfos[1]}");
+        Constraint constraint = new Constraint();
+        constraint.setType(ConstraintType.PATTERN);
+        constraint.setParameters(new String []{"{#request.pathInfos[1]}"});
+        rule.setConstraint(constraint);
+
+        when(configuration.getRules()).thenReturn(Arrays.asList(rule));
+
+        // Execute policy
+        policy.onRequest(request, response, executionContext, policyChain);
+        when(request.pathInfo()).thenReturn("/ro");
+        policy.onRequest(request, response, executionContext, policyChain);
+        verify(policyChain, times(2)).doNext(request, response);
+    }
+
+    @Test
     public void shouldValidateQueryParameter_RuleWithParamsContainsNull() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
