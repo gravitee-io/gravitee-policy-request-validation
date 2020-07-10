@@ -33,6 +33,7 @@ Constraint rules can be:
 * MIN: Input value is a number and its value is greater or equals to a given parameter.
 * MAX: Input value is a number and its value is lower or equals to a given parameter.
 * MAIL: Input value is valid according to the mail pattern.
+* DATE: Input value is valid according to the date format pattern given as a parameter.
 * PATTERN: Input value is valid according to the pattern given as a parameter.
 * SIZE: Input value length is between two given parameters.
 * ENUM: Field value included in ENUM.

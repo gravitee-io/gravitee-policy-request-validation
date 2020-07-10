@@ -26,6 +26,7 @@ public enum ConstraintType {
     NOT_NULL(NotNullConstraintValidator.class),
     MAIL(MailConstraintValidator.class),
     PATTERN(PatternConstraintValidator.class),
+    DATE(DateFormatConstraintValidator.class),
     MIN(MinConstraintValidator.class),
     MAX(MaxConstraintValidator.class),
     SIZE(SizeConstraintValidator.class),
