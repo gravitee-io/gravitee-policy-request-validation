@@ -531,4 +531,37 @@ public class RequestValidationPolicyTest {
         verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
 
     }
+
+    @Test
+    public void shouldNotValidateQueryParameter_RuleNotRequiredAndEmptyParameter() {
+        // Prepare inbound request
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
+        when(parameters.get("my-param")).thenReturn(Collections.singletonList(""));
+        when(request.parameters()).thenReturn(parameters);
+
+        // Prepare template engine
+        TemplateEngine engine = TemplateEngine.templateEngine();
+        engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
+
+        when(executionContext.getTemplateEngine()).thenReturn(engine);
+
+        // Prepare constraint rule
+        Rule rule = new Rule();
+        rule.setInput("{#request.params['my-param']}");
+        Constraint constraint = new Constraint();
+        constraint.setType(ConstraintType.PATTERN);
+        String[] patterns = {"^[A-Za-z]+$"};
+        constraint.setParameters(patterns);
+        rule.setConstraint(constraint);
+        rule.setIsRequired(false);
+
+        when(configuration.getRules()).thenReturn(Collections.singletonList(rule));
+
+        // Execute policy
+        policy.onRequest(request, response, executionContext, policyChain);
+
+        // Check results
+        verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
+
+    }
 }
