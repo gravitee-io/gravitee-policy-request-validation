@@ -29,7 +29,8 @@ public enum ConstraintType {
     DATE(DateFormatConstraintValidator.class),
     MIN(MinConstraintValidator.class),
     MAX(MaxConstraintValidator.class),
-    SIZE(SizeConstraintValidator.class);
+    SIZE(SizeConstraintValidator.class),
+    ENUM(EnumConstraintValidator.class);
 
     private Class<? extends ConstraintValidator> validator;
 

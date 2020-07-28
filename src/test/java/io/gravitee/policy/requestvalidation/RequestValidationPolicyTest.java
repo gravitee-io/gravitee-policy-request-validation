@@ -564,4 +564,65 @@ public class RequestValidationPolicyTest {
         verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
 
     }
+
+    @Test
+    public void shouldValidateQueryParameter_inENUM() {
+        // Prepare inbound request
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
+        when(parameters.get("my-param")).thenReturn(Collections.singletonList("One"));
+        when(request.parameters()).thenReturn(parameters);
+
+        // Prepare template engine
+        TemplateEngine engine = TemplateEngine.templateEngine();
+        engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
+
+        when(executionContext.getTemplateEngine()).thenReturn(engine);
+
+        // Prepare constraint rule
+        Rule rule = new Rule();
+        rule.setInput("{#request.params['my-param']}");
+        Constraint constraint = new Constraint();
+        constraint.setType(ConstraintType.ENUM);
+        constraint.setParameters(new String []{"One", "Two"});
+        rule.setConstraint(constraint);
+
+        when(configuration.getRules()).thenReturn(Arrays.asList(rule));
+
+        // Execute policy
+        policy.onRequest(request, response, executionContext, policyChain);
+
+        // Check results
+        verify(policyChain).doNext(request, response);
+    }
+
+    @Test
+    public void shouldValidateQueryParameter_outENUM() {
+        // Prepare inbound request
+        MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
+        when(parameters.get("my-param")).thenReturn(Collections.singletonList("Three"));
+        when(request.parameters()).thenReturn(parameters);
+
+        // Prepare template engine
+        TemplateEngine engine = TemplateEngine.templateEngine();
+        engine.getTemplateContext().setVariable("request", new EvaluableRequest(request));
+
+        when(executionContext.getTemplateEngine()).thenReturn(engine);
+
+        // Prepare constraint rule
+        Rule rule = new Rule();
+        rule.setInput("{#request.params['my-param']}");
+        Constraint constraint = new Constraint();
+        constraint.setType(ConstraintType.ENUM);
+        constraint.setParameters(new String []{"One", "Two"});
+        rule.setConstraint(constraint);
+
+        when(configuration.getRules()).thenReturn(Arrays.asList(rule));
+
+        // Execute policy
+        policy.onRequest(request, response, executionContext, policyChain);
+
+        // Check results
+        verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
+    }
+
 }
