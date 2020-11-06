@@ -7,7 +7,8 @@
       "description": "Execute policy on <strong>request</strong> or <strong>request-content</strong> phase.",
       "type" : "string",
       "default": "REQUEST",
-      "enum" : [ "REQUEST", "REQUEST_CONTENT" ]
+      "enum" : [ "REQUEST", "REQUEST_CONTENT" ],
+      "deprecated": true
     },
     "status" : {
       "title": "Status Code",
