@@ -1,4 +1,4 @@
-= Request validation Policy
+= Request validation policy
 
 ifdef::env-github[]
 image:https://ci.gravitee.io/buildStatus/icon?job=gravitee-io/gravitee-policy-request-validation/master["Build status", link="https://ci.gravitee.io/buildStatus/icon?job=gravitee-io/gravitee-policy-request-validation/master/"]
@@ -23,22 +23,22 @@ endif::[]
 
 == Description
 
-The `request validation` policy is used to validate the incoming HTTP request according to given rules.
-A rule is defined for an input value. This input value supports EL expression and is validated against to constraint
+You can use the `request-validation` policy to validate an incoming HTTP request according to defined rules.
+A rule is defined for an input value. This input value supports Expression Language expressions and is validated against constraint
 rules.
 
 Constraint rules can be:
 
-* NOT_NULL: Input value is required
-* MIN: Input value is a number and its value is greater or equals to a given parameter.
-* MAX: Input value is a number and its value is lower or equals to a given parameter.
-* MAIL: Input value is valid according to the mail pattern.
-* DATE: Input value is valid according to the date format pattern given as a parameter.
-* PATTERN: Input value is valid according to the pattern given as a parameter.
-* SIZE: Input value length is between two given parameters.
-* ENUM: Field value included in ENUM.
+* `NOT_NULL` -- Input value is required
+* `MIN` -- Input value is a number and its value is greater than or equal to a given parameter
+* `MAX` -- Input value is a number and its value is lower than or equal to a given parameter
+* `MAIL` -- Input value is valid according to the mail pattern
+* `DATE` -- Input value is valid according to the date format pattern given as a parameter
+* `PATTERN` -- Input value is valid according to the pattern given as a parameter
+* `SIZE` -- Input value length is between two given parameters
+* `ENUM` -- Field value included in ENUM
 
-By default, if one of the rule can not be validated, the policy returns a `400` status code.
+By default, if none of the rules can be validated, the policy returns a `400` status code.
 
 == Configuration
 
@@ -47,13 +47,13 @@ By default, if one of the rule can not be validated, the policy returns a `400` 
 
 .^|scope
 ^.^|X
-|Policy scope from where the policy is executed
+|Phase when the policy is executed
 ^.^|Policy scope
 ^.^|ON_REQUEST
 
 .^|status
 ^.^|X
-|HTTP Status Code send to the consumer in case of validation issues
+|HTTP status code send to the consumer in case of validation issues
 ^.^|HTTP status code
 ^.^|400
 
@@ -65,8 +65,9 @@ By default, if one of the rule can not be validated, the policy returns a `400` 
 
 |===
 
+=== Example configuration
+
 [source, json]
-.Sample
 ----
 "policy-request-validation": {
     "rules": [
@@ -86,7 +87,7 @@ By default, if one of the rule can not be validated, the policy returns a `400` 
 
 == Errors
 
-=== Default error
+=== HTTP status code
 |===
 |Code |Message
 
@@ -95,12 +96,14 @@ By default, if one of the rule can not be validated, the policy returns a `400` 
 
 |===
 
-=== Override errors
-If you're looking to override the default response provided by the policy, you can do it
-thanks to the response templates feature. These templates must be define at the API level (see `Response Templates`
-from the `Proxy` menu).
+=== Default response override
 
-Here are the error keys send by this policy:
+You can use the response template feature to override the default response provided by the policy. These templates must be defined at the API level (see the API Console *Response Templates*
+option in the API *Proxy* menu).
+
+=== Error keys
+
+The error keys sent by this policy are as follows:
 
 [cols="2*", options="header"]
 |===
