@@ -128,7 +128,10 @@
           "input" : {
             "type" : "string",
             "title": "Field value",
-            "description": "The input value to validate (supports EL)"
+            "description": "The input value to validate (supports EL)",
+            "x-schema-form": {
+              "expression-language": true
+            }
           },
           "isRequired" : {
             "type" : "boolean",
@@ -154,7 +157,10 @@
                 "items" : {
                   "type" : "string",
                   "title": "Parameter",
-                  "description": "Must be defined for MIN, MAX, DATE or PATTERN constraints (supports EL)"
+                  "description": "Must be defined for MIN, MAX, DATE or PATTERN constraints (supports EL)",
+                  "x-schema-form": {
+                    "expression-language": true
+                  }
                 }
               },
               "message" : {
