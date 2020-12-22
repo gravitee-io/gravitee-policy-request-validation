@@ -146,9 +146,9 @@ public class RequestValidationPolicy {
 
             TemplateEngine templateEngine = executionContext.getTemplateEngine();
             String input = templateEngine.getValue(rule.getInput(), String.class);
-            if (rule.getIsRequired() || (input != null && !input.isEmpty())) {
+            if (rule.getIsRequired() || input != null) {
                 Validator validator = new ExpressionBasedValidator(executionContext.getTemplateEngine());
-                ConstraintViolation constraintViolation = validator.validate(rule.getInput(), rule.getConstraint());
+                ConstraintViolation constraintViolation = validator.validate(rule.getInput(), new Constraint(rule.getConstraint()));
                 if (constraintViolation != null) {
                     violations.add(constraintViolation);
                 }
