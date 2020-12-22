@@ -30,6 +30,15 @@ public class Constraint {
 
     private String message;
 
+    public Constraint() {
+    }
+
+    public Constraint(Constraint other) {
+        this.type = other.type;
+        this.parameters = other.parameters;
+        this.message = other.message;
+    }
+
     public String[] getParameters() {
         if (parameters == null || parameters.length == 0) {
             return parameters;
