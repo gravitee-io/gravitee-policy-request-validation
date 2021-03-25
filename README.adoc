@@ -40,6 +40,10 @@ Constraint rules can be:
 
 By default, if none of the rules can be validated, the policy returns a `400` status code.
 
+=== Policy identifier
+
+You can enable or disable the policy with policy identifier `policy-request-validation`.
+
 == Configuration
 
 |===
