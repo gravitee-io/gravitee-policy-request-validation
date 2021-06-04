@@ -30,17 +30,31 @@
     <parent>
         <groupId>io.gravitee</groupId>
         <artifactId>gravitee-parent</artifactId>
-        <version>19</version>
+        <version>20.0</version>
     </parent>
 
     <properties>
-        <gravitee-gateway-api.version>1.22.0</gravitee-gateway-api.version>
+        <gravitee-bom.version>1.0</gravitee-bom.version>
+        <gravitee-gateway-api.version>1.26.0-SNAPSHOT</gravitee-gateway-api.version>
         <gravitee-policy-api.version>1.10.0</gravitee-policy-api.version>
         <gravitee-common.version>1.18.0</gravitee-common.version>
         <swagger-parser.version>2.0.14</swagger-parser.version>
 
         <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Import bom to properly inherit all dependencies -->
+            <dependency>
+                <groupId>io.gravitee</groupId>
+                <artifactId>gravitee-bom</artifactId>
+                <version>${gravitee-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Gravitee.io dependencies -->
@@ -84,7 +98,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -92,7 +105,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
             <scope>provided</scope>
         </dependency>
 
