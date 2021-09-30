@@ -37,6 +37,7 @@
         <gravitee-gateway-api.version>1.22.0</gravitee-gateway-api.version>
         <gravitee-policy-api.version>1.10.0</gravitee-policy-api.version>
         <gravitee-common.version>1.18.0</gravitee-common.version>
+        <guava.version>30.1.1-jre</guava.version>
         <swagger-parser.version>2.0.14</swagger-parser.version>
 
         <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
@@ -93,6 +94,14 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Cache dependencies -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
             <scope>provided</scope>
         </dependency>
 

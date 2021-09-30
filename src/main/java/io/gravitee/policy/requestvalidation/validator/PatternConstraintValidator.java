@@ -15,6 +15,10 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -27,11 +31,18 @@ public class PatternConstraintValidator extends StringConstraintValidator {
 
     private Pattern pattern;
 
+    public static final int PATTERN_CACHE_CAPACITY = 100;
+    private final static Cache<String, Pattern> cache = CacheBuilder
+            .newBuilder()
+            .maximumSize(PATTERN_CACHE_CAPACITY)
+            .build();
+
     @Override
     public void initialize(String ... parameters) {
         try {
             if (parameters != null && parameters.length > 0) {
-                pattern = Pattern.compile(parameters[0]);
+                final String regex = parameters[0];
+                pattern = cache.get(regex, () -> Pattern.compile(regex));
                 init = true;
             }
         } catch (Throwable t) {
