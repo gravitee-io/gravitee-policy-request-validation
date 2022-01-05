@@ -15,7 +15,6 @@
  */
 package io.gravitee.policy.requestvalidation;
 
-import io.gravitee.common.http.HttpHeaders;
 import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.common.util.MultiValueMap;
 import io.gravitee.el.TemplateEngine;
@@ -23,6 +22,7 @@ import io.gravitee.gateway.api.ExecutionContext;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
 import io.gravitee.gateway.api.el.EvaluableRequest;
+import io.gravitee.gateway.api.http.HttpHeaders;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.validator.*;
@@ -163,7 +163,7 @@ public class RequestValidationPolicyTest {
         when(request.parameters()).thenReturn(parameters);
 
         HttpHeaders headers = mock(HttpHeaders.class);
-        when(headers.get("my-header")).thenReturn(Collections.singletonList("header-value"));
+        when(headers.getAll("my-header")).thenReturn(Collections.singletonList("header-value"));
         when(request.headers()).thenReturn(headers);
 
         // Prepare template engine
@@ -272,7 +272,7 @@ public class RequestValidationPolicyTest {
         final String PATTERN = "^[0-9a-fA-F]{32}\\z";
 
         HttpHeaders headers = mock(HttpHeaders.class);
-        when(headers.get("my-header")).thenReturn(null);
+        when(headers.getAll("my-header")).thenReturn(null);
         when(request.headers()).thenReturn(headers);
 
         // Prepare template engine
