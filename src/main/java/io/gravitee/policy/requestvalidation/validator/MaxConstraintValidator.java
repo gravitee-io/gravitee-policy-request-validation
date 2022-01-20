@@ -26,14 +26,13 @@ public class MaxConstraintValidator extends NumberConstraintValidator {
     private boolean init = false;
 
     @Override
-    public void initialize(String ... parameters) {
+    public void initialize(String... parameters) {
         try {
             if (parameters != null && parameters.length > 0) {
                 max = Long.parseLong(parameters[0]);
                 init = true;
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
     }
 
     @Override
@@ -45,5 +44,4 @@ public class MaxConstraintValidator extends NumberConstraintValidator {
     public String getMessageTemplate() {
         return "'%s' must be lower or equals to '%s'";
     }
-
 }

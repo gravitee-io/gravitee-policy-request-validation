@@ -34,5 +34,4 @@ public class EnumConstraintValidatorTest {
         result = enumConstraintValidator.isValid("Three");
         Assert.assertFalse(result);
     }
-
 }

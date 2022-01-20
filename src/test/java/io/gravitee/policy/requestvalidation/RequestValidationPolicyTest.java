@@ -15,6 +15,9 @@
  */
 package io.gravitee.policy.requestvalidation;
 
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.*;
+
 import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.common.util.MultiValueMap;
 import io.gravitee.el.TemplateEngine;
@@ -26,18 +29,14 @@ import io.gravitee.gateway.api.http.HttpHeaders;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.validator.*;
+import java.util.*;
+import java.util.regex.Pattern;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.*;
-import java.util.regex.Pattern;
-
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.*;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
@@ -143,7 +142,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.MIN);
-        constraint.setParameters(new String []{"toto"}); // Toto is not a valid number
+        constraint.setParameters(new String[] { "toto" }); // Toto is not a valid number
         rule.setConstraint(constraint);
 
         when(configuration.getRules()).thenReturn(Collections.singletonList(rule));
@@ -179,7 +178,7 @@ public class RequestValidationPolicyTest {
         constraint.setType(ConstraintType.NOT_NULL);
         Constraint constraintMin = new Constraint();
         constraintMin.setType(ConstraintType.MIN);
-        constraintMin.setParameters(new String []{"50"});
+        constraintMin.setParameters(new String[] { "50" });
         rule.setConstraint(constraint);
 
         Rule rule2 = new Rule();
@@ -213,7 +212,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.pathInfos[1]}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        constraint.setParameters(new String []{"{#request.pathInfos[1]}"});
+        constraint.setParameters(new String[] { "{#request.pathInfos[1]}" });
         rule.setConstraint(constraint);
 
         when(configuration.getRules()).thenReturn(Arrays.asList(rule));
@@ -243,7 +242,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.NOT_NULL);
-        constraint.setParameters(new String[]{null});
+        constraint.setParameters(new String[] { null });
         rule.setConstraint(constraint);
 
         when(configuration.getRules()).thenReturn(Collections.singletonList(rule));
@@ -255,7 +254,7 @@ public class RequestValidationPolicyTest {
         verify(policyChain).doNext(request, response);
     }
 
-    public Rule prepareRule(String input, String[] params, ConstraintType constraintType){
+    public Rule prepareRule(String input, String[] params, ConstraintType constraintType) {
         Rule rule = new Rule();
         rule.setInput(input);
         Constraint constraint = new Constraint();
@@ -267,7 +266,6 @@ public class RequestValidationPolicyTest {
 
     @Test
     public void shouldValidateTheOrderOfViolationsWhenUsingMultipleRules() {
-
         final String RULE_VALUE = "{#request.headers['my-header']}";
         final String PATTERN = "^[0-9a-fA-F]{32}\\z";
 
@@ -286,34 +284,19 @@ public class RequestValidationPolicyTest {
         validatorRegexMap.put(PatternConstraintValidator.class, "^'.+' is not valid \\(pattern: '.+'\\)$");
         validatorRegexMap.put(MinConstraintValidator.class, "^'.+' must be higher or equals to '\\d+'");
         validatorRegexMap.put(MaxConstraintValidator.class, "^'.+' must be lower or equals to '\\d+'");
-        validatorRegexMap.put(SizeConstraintValidator.class, "'.+' length must be higher or equals to '\\d+' and lower or equals to '\\d+'");
+        validatorRegexMap.put(
+            SizeConstraintValidator.class,
+            "'.+' length must be higher or equals to '\\d+' and lower or equals to '\\d+'"
+        );
         validatorRegexMap.put(MailConstraintValidator.class, "^.+ is not a valid email.$");
 
         LinkedHashMap<Rule, ConstraintValidator> rulesMap = new LinkedHashMap<>();
-        rulesMap.put(
-            prepareRule(RULE_VALUE, new String[]{"*"}, ConstraintType.NOT_NULL),
-            new NotNullConstraintValidator()
-        );
-        rulesMap.put(
-            prepareRule(RULE_VALUE, new String[]{PATTERN}, ConstraintType.PATTERN),
-            new PatternConstraintValidator()
-        );
-        rulesMap.put(
-            prepareRule(RULE_VALUE, new String[]{"5"}, ConstraintType.MIN),
-            new MinConstraintValidator()
-        );
-        rulesMap.put(
-            prepareRule(RULE_VALUE, new String[]{"5"}, ConstraintType.MAX),
-            new MaxConstraintValidator()
-        );
-        rulesMap.put(
-            prepareRule(RULE_VALUE, new String[]{"5","10"}, ConstraintType.SIZE),
-            new SizeConstraintValidator()
-        );
-        rulesMap.put(
-            prepareRule(RULE_VALUE, new String[]{"wrong-mail"}, ConstraintType.MAIL),
-            new MailConstraintValidator()
-        );
+        rulesMap.put(prepareRule(RULE_VALUE, new String[] { "*" }, ConstraintType.NOT_NULL), new NotNullConstraintValidator());
+        rulesMap.put(prepareRule(RULE_VALUE, new String[] { PATTERN }, ConstraintType.PATTERN), new PatternConstraintValidator());
+        rulesMap.put(prepareRule(RULE_VALUE, new String[] { "5" }, ConstraintType.MIN), new MinConstraintValidator());
+        rulesMap.put(prepareRule(RULE_VALUE, new String[] { "5" }, ConstraintType.MAX), new MaxConstraintValidator());
+        rulesMap.put(prepareRule(RULE_VALUE, new String[] { "5", "10" }, ConstraintType.SIZE), new SizeConstraintValidator());
+        rulesMap.put(prepareRule(RULE_VALUE, new String[] { "wrong-mail" }, ConstraintType.MAIL), new MailConstraintValidator());
 
         ArrayList<Rule> rules = new ArrayList<>(rulesMap.keySet());
         when(configuration.getRules()).thenReturn(rules);
@@ -322,22 +305,25 @@ public class RequestValidationPolicyTest {
         policy.onRequest(request, response, executionContext, policyChain);
 
         // Check results
-        verify(policyChain).failWith(
-            argThat(result -> {
-                ArrayList<String> violationsTemp = (ArrayList<String>) result.parameters().get("violations");
-                ArrayDeque<String> violations = new ArrayDeque<>(violationsTemp);
+        verify(policyChain)
+            .failWith(
+                argThat(result -> {
+                    ArrayList<String> violationsTemp = (ArrayList<String>) result.parameters().get("violations");
+                    ArrayDeque<String> violations = new ArrayDeque<>(violationsTemp);
 
-                rulesMap.entrySet().stream().forEach(ruleMapEntry -> {
-                    ConstraintValidator validator = ruleMapEntry.getValue();
-                    String violation = violations.pollFirst();
-                    Assert.assertTrue(Pattern.matches(validatorRegexMap.get(validator.getClass()), violation));
-                });
+                    rulesMap
+                        .entrySet()
+                        .stream()
+                        .forEach(ruleMapEntry -> {
+                            ConstraintValidator validator = ruleMapEntry.getValue();
+                            String violation = violations.pollFirst();
+                            Assert.assertTrue(Pattern.matches(validatorRegexMap.get(validator.getClass()), violation));
+                        });
 
-                return result.statusCode() == HttpStatusCode.BAD_REQUEST_400;
-            })
-        );
+                    return result.statusCode() == HttpStatusCode.BAD_REQUEST_400;
+                })
+            );
     }
-
 
     @Test
     public void shouldValidateQueryParameter_NotRequiredAndNotPresent() {
@@ -355,7 +341,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        String[] patterns = {"^[A-Za-z]+$"};
+        String[] patterns = { "^[A-Za-z]+$" };
         constraint.setParameters(patterns);
         rule.setConstraint(constraint);
         rule.setIsRequired(false);
@@ -385,7 +371,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        String[] patterns = {"^[A-Za-z]+$"};
+        String[] patterns = { "^[A-Za-z]+$" };
         constraint.setParameters(patterns);
         rule.setConstraint(constraint);
         rule.setIsRequired(true);
@@ -398,7 +384,6 @@ public class RequestValidationPolicyTest {
         // Check results
         verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
     }
-
 
     @Test
     public void shouldValidateQueryParameter_ValidPatternNotRequiredAndPresent() {
@@ -418,7 +403,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        String[] patterns = {"^[A-Za-z]+$"};
+        String[] patterns = { "^[A-Za-z]+$" };
         constraint.setParameters(patterns);
         rule.setConstraint(constraint);
         rule.setIsRequired(false);
@@ -431,7 +416,6 @@ public class RequestValidationPolicyTest {
         // Check results
         verify(policyChain).doNext(request, response);
     }
-
 
     @Test
     public void shouldValidateQueryParameter_ValidPatternRequiredAndPresent() {
@@ -451,7 +435,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        String[] patterns = {"^[A-Za-z]+$"};
+        String[] patterns = { "^[A-Za-z]+$" };
         constraint.setParameters(patterns);
         rule.setConstraint(constraint);
         rule.setIsRequired(true);
@@ -464,7 +448,6 @@ public class RequestValidationPolicyTest {
         // Check results
         verify(policyChain).doNext(request, response);
     }
-
 
     @Test
     public void shouldNotValidateQueryParameter_NotValidPatternNotRequiredAndPresent() {
@@ -484,7 +467,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        String[] patterns = {"^[A-Za-z]+$"};
+        String[] patterns = { "^[A-Za-z]+$" };
         constraint.setParameters(patterns);
         rule.setConstraint(constraint);
         rule.setIsRequired(false);
@@ -496,7 +479,6 @@ public class RequestValidationPolicyTest {
 
         // Check results
         verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
-
     }
 
     @Test
@@ -517,7 +499,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        String[] patterns = {"^[A-Za-z]+$"};
+        String[] patterns = { "^[A-Za-z]+$" };
         constraint.setParameters(patterns);
         rule.setConstraint(constraint);
         rule.setIsRequired(true);
@@ -529,7 +511,6 @@ public class RequestValidationPolicyTest {
 
         // Check results
         verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
-
     }
 
     @Test
@@ -550,7 +531,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.PATTERN);
-        String[] patterns = {"^[A-Za-z]+$"};
+        String[] patterns = { "^[A-Za-z]+$" };
         constraint.setParameters(patterns);
         rule.setConstraint(constraint);
         rule.setIsRequired(false);
@@ -562,7 +543,6 @@ public class RequestValidationPolicyTest {
 
         // Check results
         verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
-
     }
 
     @Test
@@ -583,7 +563,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.ENUM);
-        constraint.setParameters(new String []{"One", "Two"});
+        constraint.setParameters(new String[] { "One", "Two" });
         rule.setConstraint(constraint);
 
         when(configuration.getRules()).thenReturn(Arrays.asList(rule));
@@ -613,7 +593,7 @@ public class RequestValidationPolicyTest {
         rule.setInput("{#request.params['my-param']}");
         Constraint constraint = new Constraint();
         constraint.setType(ConstraintType.ENUM);
-        constraint.setParameters(new String []{"One", "Two"});
+        constraint.setParameters(new String[] { "One", "Two" });
         rule.setConstraint(constraint);
 
         when(configuration.getRules()).thenReturn(Arrays.asList(rule));
@@ -624,5 +604,4 @@ public class RequestValidationPolicyTest {
         // Check results
         verify(policyChain).failWith(argThat(result -> result.statusCode() == HttpStatusCode.BAD_REQUEST_400));
     }
-
 }

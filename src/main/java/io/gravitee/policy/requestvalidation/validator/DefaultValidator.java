@@ -33,15 +33,16 @@ public class DefaultValidator implements Validator {
             ConstraintValidator constraintValidator = clazz.newInstance();
             constraintValidator.initialize(constraint.getParameters());
             boolean valid = constraintValidator.isValid(input);
-            if (! valid) {
+            if (!valid) {
                 ConstraintViolation violation = new ConstraintViolation();
                 // Get message from validator
                 String[] parameters = (constraint.getParameters() != null) ? constraint.getParameters() : new String[0];
-                String[] inputs = new String[parameters.length+1];
+                String[] inputs = new String[parameters.length + 1];
                 inputs[0] = input;
                 System.arraycopy(parameters, 0, inputs, 1, parameters.length);
                 String message = (constraint.getMessage() == null || constraint.getMessage().isEmpty())
-                        ? constraintValidator.getMessageTemplate() : constraint.getMessage();
+                    ? constraintValidator.getMessageTemplate()
+                    : constraint.getMessage();
                 violation.setMessage(String.format(message, inputs));
 
                 return violation;

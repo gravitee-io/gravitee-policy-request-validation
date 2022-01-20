@@ -27,27 +27,23 @@ public class SizeConstraintValidator extends StringConstraintValidator {
     private boolean init = false;
 
     @Override
-    public void initialize(String ... parameters) {
+    public void initialize(String... parameters) {
         try {
             if (parameters != null && parameters.length > 1) {
                 min = Long.parseLong(parameters[0]);
                 max = Long.parseLong(parameters[1]);
                 init = true;
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
     }
 
     @Override
     public boolean isValid(String value) {
-        return init &&
-                value != null &&
-                value.length() >= min && value.length() <= max;
+        return init && value != null && value.length() >= min && value.length() <= max;
     }
 
     @Override
     public String getMessageTemplate() {
         return "'%s' length must be higher or equals to '%s' and lower or equals to '%s'";
     }
-
 }

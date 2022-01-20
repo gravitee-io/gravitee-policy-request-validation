@@ -20,11 +20,9 @@ package io.gravitee.policy.requestvalidation;
  * @author GraviteeSource Team
  */
 public interface ConstraintValidator<T> {
-
-    void initialize(String ... parameters);
+    void initialize(String... parameters);
 
     boolean isValid(T value);
 
     String getMessageTemplate();
-
 }

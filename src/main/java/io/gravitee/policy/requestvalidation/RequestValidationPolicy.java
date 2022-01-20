@@ -15,6 +15,8 @@
  */
 package io.gravitee.policy.requestvalidation;
 
+import static java.util.stream.Collectors.toList;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -36,12 +38,9 @@ import io.gravitee.policy.api.annotations.OnRequestContent;
 import io.gravitee.policy.requestvalidation.configuration.PolicyScope;
 import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolicyConfiguration;
 import io.gravitee.policy.requestvalidation.validator.ExpressionBasedValidator;
-
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
@@ -54,14 +53,13 @@ public class RequestValidationPolicy {
      */
     private RequestValidationPolicyConfiguration configuration;
 
-    private final static String FIELD_MESSAGE = "message";
-    private final static String FIELD_CONSTRAINTS = "constraints";
-    private final static String DEFAULT_MESSAGE = "Request is not valid according to constraint rules";
+    private static final String FIELD_MESSAGE = "message";
+    private static final String FIELD_CONSTRAINTS = "constraints";
+    private static final String DEFAULT_MESSAGE = "Request is not valid according to constraint rules";
 
-    private final static String REQUEST_VARIABLE = "request";
+    private static final String REQUEST_VARIABLE = "request";
 
     private static final String REQUEST_VALIDATION_INVALID = "REQUEST_VALIDATION_INVALID";
-
 
     /**
      * Create a new policy instance based on its associated configuration
@@ -74,21 +72,24 @@ public class RequestValidationPolicy {
 
     @OnRequest
     public void onRequest(Request request, Response response, ExecutionContext executionContext, PolicyChain policyChain) {
-        if ((configuration.getScope() == null || configuration.getScope() == PolicyScope.REQUEST)
-                && (configuration.getRules() != null && !configuration.getRules().isEmpty())) {
+        if (
+            (configuration.getScope() == null || configuration.getScope() == PolicyScope.REQUEST) &&
+            (configuration.getRules() != null && !configuration.getRules().isEmpty())
+        ) {
             Set<ConstraintViolation> violations = validate(executionContext);
 
             if (violations.isEmpty()) {
                 policyChain.doNext(request, response);
             } else {
                 final List<String> messageViolations = violations.stream().map(ConstraintViolation::getMessage).collect(toList());
-                policyChain.failWith(PolicyResult.failure(
+                policyChain.failWith(
+                    PolicyResult.failure(
                         REQUEST_VALIDATION_INVALID,
                         configuration.getStatus(),
                         createErrorPayload(violations),
-                        Maps.<String, Object>builder()
-                                .put("violations", messageViolations)
-                                .build()));
+                        Maps.<String, Object>builder().put("violations", messageViolations).build()
+                    )
+                );
             }
         } else {
             policyChain.doNext(request, response);
@@ -99,7 +100,6 @@ public class RequestValidationPolicy {
     public ReadWriteStream onRequestContent(Request request, ExecutionContext executionContext, PolicyChain policyChain) {
         if (configuration.getScope() != null && configuration.getScope() == PolicyScope.REQUEST_CONTENT) {
             return new BufferedReadWriteStream() {
-
                 Buffer buffer = Buffer.buffer();
 
                 @Override
@@ -111,21 +111,24 @@ public class RequestValidationPolicy {
                 @Override
                 public void end() {
                     String content = buffer.toString();
-                    executionContext.getTemplateEngine().getTemplateContext()
-                            .setVariable(REQUEST_VARIABLE, new EvaluableRequest(request, content));
+                    executionContext
+                        .getTemplateEngine()
+                        .getTemplateContext()
+                        .setVariable(REQUEST_VARIABLE, new EvaluableRequest(request, content));
 
                     // Apply validation rules
                     Set<ConstraintViolation> violations = validate(executionContext);
 
                     if (!violations.isEmpty()) {
                         final List<String> messageViolations = violations.stream().map(ConstraintViolation::getMessage).collect(toList());
-                        policyChain.streamFailWith(PolicyResult.failure(
+                        policyChain.streamFailWith(
+                            PolicyResult.failure(
                                 REQUEST_VALIDATION_INVALID,
                                 configuration.getStatus(),
                                 createErrorPayload(violations),
-                                Maps.<String, Object>builder()
-                                        .put("violations", messageViolations)
-                                        .build()));
+                                Maps.<String, Object>builder().put("violations", messageViolations).build()
+                            )
+                        );
                     } else {
                         if (buffer.length() > 0) {
                             super.write(buffer);
@@ -143,7 +146,6 @@ public class RequestValidationPolicy {
     private Set<ConstraintViolation> validate(ExecutionContext executionContext) {
         LinkedHashSet<ConstraintViolation> violations = new LinkedHashSet<>();
         for (Rule rule : configuration.getRules()) {
-
             TemplateEngine templateEngine = executionContext.getTemplateEngine();
             String input = templateEngine.getValue(rule.getInput(), String.class);
             if (rule.getIsRequired() || input != null) {

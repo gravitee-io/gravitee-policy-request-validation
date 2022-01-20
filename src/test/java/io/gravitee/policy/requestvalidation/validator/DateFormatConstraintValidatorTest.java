@@ -23,7 +23,7 @@ import org.junit.Test;
  * @author GraviteeSource Team
  */
 public class DateFormatConstraintValidatorTest {
-	
+
     @Test
     public void shouldNotValidate_nullValue() {
         DateFormatConstraintValidator validator = new DateFormatConstraintValidator();
@@ -35,7 +35,7 @@ public class DateFormatConstraintValidatorTest {
     @Test
     public void shouldNotValidate_doesNotRespectPattern() {
         DateFormatConstraintValidator validator = new DateFormatConstraintValidator();
-    	validator.initialize("dd/MM/yyyy");
+        validator.initialize("dd/MM/yyyy");
         boolean valid = validator.isValid("31/20/19991");
         Assert.assertFalse(valid);
     }
@@ -43,7 +43,7 @@ public class DateFormatConstraintValidatorTest {
     @Test
     public void shouldValidate_simpleFormat() {
         DateFormatConstraintValidator validator = new DateFormatConstraintValidator();
-    	validator.initialize("dd/MM/yyyy");
+        validator.initialize("dd/MM/yyyy");
         boolean valid = validator.isValid("29/02/2012");
         Assert.assertTrue(valid);
     }

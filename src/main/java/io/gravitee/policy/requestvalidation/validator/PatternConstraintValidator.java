@@ -28,21 +28,20 @@ public class PatternConstraintValidator extends StringConstraintValidator {
     private Pattern pattern;
 
     @Override
-    public void initialize(String ... parameters) {
+    public void initialize(String... parameters) {
         try {
             if (parameters != null && parameters.length > 0) {
                 pattern = Pattern.compile(parameters[0]);
                 init = true;
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
     }
 
     @Override
     public boolean isValid(String value) {
-    	if(value == null) {
-    		return false;
-    	}
+        if (value == null) {
+            return false;
+        }
         return init && pattern.matcher(value).find();
     }
 
@@ -50,5 +49,4 @@ public class PatternConstraintValidator extends StringConstraintValidator {
     public String getMessageTemplate() {
         return "'%s' is not valid (pattern: '%s')";
     }
-
 }

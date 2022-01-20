@@ -18,7 +18,6 @@ package io.gravitee.policy.requestvalidation.configuration;
 import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.policy.api.PolicyConfiguration;
 import io.gravitee.policy.requestvalidation.Rule;
-
 import java.util.List;
 
 /**

@@ -43,7 +43,11 @@ public class Rule {
         this.constraint = constraint;
     }
 
-    public boolean getIsRequired() { return isRequired; }
+    public boolean getIsRequired() {
+        return isRequired;
+    }
 
-    public void setIsRequired(boolean isRequired) { this.isRequired = isRequired;}
+    public void setIsRequired(boolean isRequired) {
+        this.isRequired = isRequired;
+    }
 }

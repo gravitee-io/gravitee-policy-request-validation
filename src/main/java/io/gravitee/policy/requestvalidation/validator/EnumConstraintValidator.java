@@ -29,7 +29,7 @@ public class EnumConstraintValidator extends StringConstraintValidator {
     private boolean init = false;
 
     @Override
-    public void initialize(String ... parameters) {
+    public void initialize(String... parameters) {
         try {
             if (parameters != null) {
                 for (String s : parameters) {
@@ -37,20 +37,16 @@ public class EnumConstraintValidator extends StringConstraintValidator {
                 }
                 init = true;
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
     }
 
     @Override
     public boolean isValid(String value) {
-        return init &&
-                value != null &&
-                data.contains(value);
+        return init && value != null && data.contains(value);
     }
 
     @Override
     public String getMessageTemplate() {
         return "'%s' not included in ENUM";
     }
-
 }
