@@ -24,8 +24,8 @@ import org.junit.Test;
  */
 public class PatternConstraintValidatorTest {
 
-	String pattern = "^test$";
-	
+    String pattern = "^test$";
+
     @Test
     public void shouldNotValidate_nullValue() {
         PatternConstraintValidator validator = new PatternConstraintValidator();
@@ -36,18 +36,17 @@ public class PatternConstraintValidatorTest {
 
     @Test
     public void shouldNotValidate_doesNotRespectPattern() {
-    	PatternConstraintValidator validator = new PatternConstraintValidator();
-    	validator.initialize(pattern);
+        PatternConstraintValidator validator = new PatternConstraintValidator();
+        validator.initialize(pattern);
         boolean valid = validator.isValid("");
         Assert.assertFalse(valid);
     }
 
     @Test
     public void shouldValidate() {
-    	PatternConstraintValidator validator = new PatternConstraintValidator();
-    	validator.initialize(pattern);
+        PatternConstraintValidator validator = new PatternConstraintValidator();
+        validator.initialize(pattern);
         boolean valid = validator.isValid("test");
         Assert.assertTrue(valid);
     }
-
 }

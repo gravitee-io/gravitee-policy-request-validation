@@ -16,7 +16,6 @@
 package io.gravitee.policy.requestvalidation.validator;
 
 import io.gravitee.policy.requestvalidation.ConstraintValidator;
-
 import java.util.List;
 
 /**
@@ -26,7 +25,5 @@ import java.util.List;
 public abstract class AbstractConstraintValidator<T> implements ConstraintValidator<T> {
 
     @Override
-    public void initialize(String ... parameters) {
-
-    }
+    public void initialize(String... parameters) {}
 }

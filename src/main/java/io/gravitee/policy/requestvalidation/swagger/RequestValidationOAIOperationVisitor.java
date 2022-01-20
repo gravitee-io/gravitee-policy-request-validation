@@ -29,7 +29,6 @@ import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolic
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.parameters.Parameter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +40,7 @@ import java.util.function.Consumer;
  */
 public class RequestValidationOAIOperationVisitor implements OAIOperationVisitor {
 
-    private final ObjectMapper mapper  = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     {
         mapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
@@ -54,41 +53,43 @@ public class RequestValidationOAIOperationVisitor implements OAIOperationVisitor
         List<Rule> rules = new ArrayList<>();
 
         if (parameters != null && !parameters.isEmpty()) {
-            parameters.forEach(new Consumer<Parameter>() {
-                @Override
-                public void accept(Parameter parameter) {
-                    String in = parameter.getIn();
-                    switch (in) {
-                        case "query":
-                            Rule rule = new Rule();
-                            rule.setInput("{#request.params['" + parameter.getName() + "']}");
+            parameters.forEach(
+                new Consumer<Parameter>() {
+                    @Override
+                    public void accept(Parameter parameter) {
+                        String in = parameter.getIn();
+                        switch (in) {
+                            case "query":
+                                Rule rule = new Rule();
+                                rule.setInput("{#request.params['" + parameter.getName() + "']}");
 
-                            Constraint constraint = new Constraint();
-                            constraint.setType(ConstraintType.NOT_NULL);
-                            constraint.setMessage(parameter.getName() + " query parameter is required");
+                                Constraint constraint = new Constraint();
+                                constraint.setType(ConstraintType.NOT_NULL);
+                                constraint.setMessage(parameter.getName() + " query parameter is required");
 
-                            rule.setConstraint(constraint);
+                                rule.setConstraint(constraint);
 
-                            rules.add(rule);
-                            break;
-                        case "header":
-                            Rule headerRule = new Rule();
-                            headerRule.setInput("{#request.headers['" + parameter.getName() + "'][0]}");
+                                rules.add(rule);
+                                break;
+                            case "header":
+                                Rule headerRule = new Rule();
+                                headerRule.setInput("{#request.headers['" + parameter.getName() + "'][0]}");
 
-                            Constraint headerConstraint = new Constraint();
-                            headerConstraint.setType(ConstraintType.NOT_NULL);
-                            headerConstraint.setMessage(parameter.getName() + " header is required");
+                                Constraint headerConstraint = new Constraint();
+                                headerConstraint.setType(ConstraintType.NOT_NULL);
+                                headerConstraint.setMessage(parameter.getName() + " header is required");
 
-                            headerRule.setConstraint(headerConstraint);
+                                headerRule.setConstraint(headerConstraint);
 
-                            rules.add(headerRule);
-                            break;
+                                rules.add(headerRule);
+                                break;
+                        }
                     }
                 }
-            });
+            );
         }
 
-        if (! rules.isEmpty()) {
+        if (!rules.isEmpty()) {
             try {
                 Policy policy = new Policy();
                 policy.setName("policy-request-validation");

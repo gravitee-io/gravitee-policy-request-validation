@@ -22,6 +22,5 @@ import java.util.List;
  * @author GraviteeSource Team
  */
 public interface ConstraintValidatorContext {
-
     List<Rule> rules();
 }

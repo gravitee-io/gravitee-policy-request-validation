@@ -29,7 +29,6 @@ import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolic
 import io.swagger.models.Operation;
 import io.swagger.models.Swagger;
 import io.swagger.models.parameters.Parameter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +39,7 @@ import java.util.Optional;
  */
 public class RequestValidationSwaggerOperationVisitor implements SwaggerOperationVisitor {
 
-    private final ObjectMapper mapper  = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     {
         mapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
@@ -84,7 +83,7 @@ public class RequestValidationSwaggerOperationVisitor implements SwaggerOperatio
             });
         }
 
-        if (! rules.isEmpty()) {
+        if (!rules.isEmpty()) {
             try {
                 Policy policy = new Policy();
                 policy.setName("policy-request-validation");

@@ -19,5 +19,4 @@ package io.gravitee.policy.requestvalidation.validator;
  * @author David BRASSELY (david.brassely at graviteesource.com)
  * @author GraviteeSource Team
  */
-abstract class StringConstraintValidator extends AbstractConstraintValidator<String> {
-}
+abstract class StringConstraintValidator extends AbstractConstraintValidator<String> {}

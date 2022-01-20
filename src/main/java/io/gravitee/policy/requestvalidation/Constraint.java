@@ -30,8 +30,7 @@ public class Constraint {
 
     private String message;
 
-    public Constraint() {
-    }
+    public Constraint() {}
 
     public Constraint(Constraint other) {
         this.type = other.type;

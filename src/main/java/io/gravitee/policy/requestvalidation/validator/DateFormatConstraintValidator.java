@@ -29,34 +29,32 @@ public class DateFormatConstraintValidator extends StringConstraintValidator {
     private SimpleDateFormat dateFormat;
 
     @Override
-    public void initialize(String ... parameters) {
+    public void initialize(String... parameters) {
         try {
             if (parameters != null && parameters.length > 0) {
                 dateFormat = new SimpleDateFormat(parameters[0]);
                 dateFormat.setLenient(false);
                 init = true;
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) {}
     }
 
     @Override
     public boolean isValid(String value) {
-    	if (value == null || !init) {
-    		return false;
-    	}
+        if (value == null || !init) {
+            return false;
+        }
 
-         try {
-             dateFormat.parse(value);
-             return true;
-         } catch (ParseException pex) {
-             return false;
-         }
+        try {
+            dateFormat.parse(value);
+            return true;
+        } catch (ParseException pex) {
+            return false;
+        }
     }
 
     @Override
     public String getMessageTemplate() {
         return "'%s' is not valid (format: '%s')";
     }
-
 }

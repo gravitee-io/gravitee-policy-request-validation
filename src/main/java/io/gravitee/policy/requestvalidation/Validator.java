@@ -20,6 +20,5 @@ package io.gravitee.policy.requestvalidation;
  * @author GraviteeSource Team
  */
 public interface Validator {
-
     ConstraintViolation validate(String input, Constraint constraint);
 }

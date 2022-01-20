@@ -21,5 +21,5 @@ package io.gravitee.policy.requestvalidation.configuration;
  */
 public enum PolicyScope {
     REQUEST,
-    REQUEST_CONTENT
+    REQUEST_CONTENT,
 }
