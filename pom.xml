@@ -39,7 +39,7 @@
         <gravitee-expression-language.version>1.8.0</gravitee-expression-language.version>
         <gravitee-policy-api.version>1.10.0</gravitee-policy-api.version>
         <gravitee-common.version>1.18.0</gravitee-common.version>
-        <swagger-parser.version>2.0.14</swagger-parser.version>
+        <swagger-parser.version>2.1.11</swagger-parser.version>
 
         <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
         <!-- Property used by the publication job in CI-->
