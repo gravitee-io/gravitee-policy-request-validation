@@ -15,23 +15,24 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class EnumConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class EnumConstraintValidatorTest {
 
     private EnumConstraintValidator enumConstraintValidator;
 
     @Test
-    public void test() {
+    void test() {
         boolean result;
         enumConstraintValidator = new EnumConstraintValidator();
         enumConstraintValidator.initialize("One", "Two");
 
         result = enumConstraintValidator.isValid("One");
-        Assert.assertTrue(result);
+        assertThat(result).isTrue();
 
         result = enumConstraintValidator.isValid("Three");
-        Assert.assertFalse(result);
+        assertThat(result).isFalse();
     }
 }
