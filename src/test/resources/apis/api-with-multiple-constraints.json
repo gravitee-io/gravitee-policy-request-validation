@@ -1,0 +1,82 @@
+{
+    "id": "my-api",
+    "name": "my-api",
+    "gravitee": "2.0.0",
+    "proxy": {
+        "context_path": "/test",
+        "endpoints": [
+            {
+                "name": "default",
+                "target": "http://localhost:8080/endpoint",
+                "http": {
+                    "connectTimeout": 3000,
+                    "readTimeout": 60000
+                }
+            }
+        ]
+    },
+    "flows": [
+        {
+            "name": "flow-1",
+            "methods": ["POST"],
+            "enabled": true,
+            "path-operator": {
+                "path": "/",
+                "operator": "STARTS_WITH"
+            },
+            "pre": [
+                {
+                    "name": "Validate Request",
+                    "description": "",
+                    "enabled": true,
+                    "policy": "policy-request-validation",
+                    "configuration": {
+                        "scope": "REQUEST_CONTENT",
+                        "rules": [
+                            {
+                                "isRequired": true,
+                                "input": "{#jsonPath(#request.content, '$.firstName')}",
+                                "constraint": {
+                                    "type": "NOT_NULL",
+                                    "message": "Missing firstName"
+                                }
+                            },
+                            {
+                                "input": "{#jsonPath(#request.content, '$.job')}",
+                                "constraint": {
+                                    "type": "ENUM",
+                                    "parameters": ["DEV", "OPS", "QA"],
+                                    "message": "Invalid job, must be one of `DEV`, `OPS` or `QA`"
+                                }
+                            },
+                            {
+                                "input": "{#jsonPath(#request.content, '$.age')}",
+                                "constraint": {
+                                    "type": "MIN",
+                                    "parameters": ["20"],
+                                    "message": "Invalid age, must be greater than 20"
+                                }
+                            },
+                            {
+                                "input": "{#jsonPath(#request.content, '$.age')}",
+                                "constraint": {
+                                    "type": "MAX",
+                                    "parameters": ["80"],
+                                    "message": "Invalid age, must be lower than 80"
+                                }
+                            },
+                            {
+                                "input": "{#jsonPath(#request.content, '$.email')}",
+                                "constraint": {
+                                    "type": "MAIL"
+                                }
+                            }
+                        ],
+                        "status": "400"
+                    }
+                }
+            ],
+            "post": []
+        }
+    ]
+}
