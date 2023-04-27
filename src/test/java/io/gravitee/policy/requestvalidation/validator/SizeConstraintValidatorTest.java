@@ -15,48 +15,45 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author David BRASSELY (david.brassely at graviteesource.com)
- * @author GraviteeSource Team
- */
-public class SizeConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class SizeConstraintValidatorTest {
 
     @Test
-    public void shouldNotValidate_missingParameter() {
+    void shouldNotValidate_missingParameter() {
         SizeConstraintValidator validator = new SizeConstraintValidator();
         validator.initialize("123");
 
         boolean valid = validator.isValid("lorem ipsum");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_invalidMaxValue() {
+    void shouldNotValidate_invalidMaxValue() {
         SizeConstraintValidator validator = new SizeConstraintValidator();
         validator.initialize("12", "123.invalid");
 
         boolean valid = validator.isValid("lorem ipsum");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldValidate() {
+    void shouldValidate() {
         SizeConstraintValidator validator = new SizeConstraintValidator();
         validator.initialize("1", "23");
 
         boolean valid = validator.isValid("lorem ipsum");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 
     @Test
-    public void shouldNotValidate() {
+    void shouldNotValidate() {
         SizeConstraintValidator validator = new SizeConstraintValidator();
         validator.initialize("1", "5");
 
         boolean valid = validator.isValid("lorem ipsum");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 }

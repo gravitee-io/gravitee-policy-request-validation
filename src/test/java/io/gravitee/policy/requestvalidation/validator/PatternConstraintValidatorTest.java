@@ -15,38 +15,35 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
 
-/**
- * @author Florent CHAMFROY (florent.chamfroy at graviteesource.com)
- * @author GraviteeSource Team
- */
-public class PatternConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class PatternConstraintValidatorTest {
 
     String pattern = "^test$";
 
     @Test
-    public void shouldNotValidate_nullValue() {
+    void shouldNotValidate_nullValue() {
         PatternConstraintValidator validator = new PatternConstraintValidator();
         validator.initialize(pattern);
         boolean valid = validator.isValid(null);
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_doesNotRespectPattern() {
+    void shouldNotValidate_doesNotRespectPattern() {
         PatternConstraintValidator validator = new PatternConstraintValidator();
         validator.initialize(pattern);
         boolean valid = validator.isValid("");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldValidate() {
+    void shouldValidate() {
         PatternConstraintValidator validator = new PatternConstraintValidator();
         validator.initialize(pattern);
         boolean valid = validator.isValid("test");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 }

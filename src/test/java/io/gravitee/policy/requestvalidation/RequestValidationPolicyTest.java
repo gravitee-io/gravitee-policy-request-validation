@@ -15,6 +15,7 @@
  */
 package io.gravitee.policy.requestvalidation;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import io.gravitee.common.http.HttpStatusCode;
@@ -30,19 +31,14 @@ import io.gravitee.policy.requestvalidation.configuration.RequestValidationPolic
 import io.gravitee.policy.requestvalidation.validator.*;
 import java.util.*;
 import java.util.regex.Pattern;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-/**
- * @author David BRASSELY (david.brassely at graviteesource.com)
- * @author GraviteeSource Team
- */
-@RunWith(MockitoJUnitRunner.class)
-public class RequestValidationPolicyTest {
+@ExtendWith(MockitoExtension.class)
+class RequestValidationPolicyTest {
 
     private RequestValidationPolicy policy;
 
@@ -61,14 +57,14 @@ public class RequestValidationPolicyTest {
     @Mock
     protected ExecutionContext executionContext;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    void init() {
         policy = new RequestValidationPolicy(configuration);
-        when(configuration.getStatus()).thenReturn(HttpStatusCode.BAD_REQUEST_400);
+        lenient().when(configuration.getStatus()).thenReturn(HttpStatusCode.BAD_REQUEST_400);
     }
 
     @Test
-    public void shouldValidateQueryParameter() {
+    void shouldValidateQueryParameter() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("my-value"));
@@ -97,7 +93,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldNotValidateQueryParameter_notNull() {
+    void shouldNotValidateQueryParameter_notNull() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(request.parameters()).thenReturn(parameters);
@@ -125,7 +121,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldNotValidateQueryParameter_invalidMinConstraint() {
+    void shouldNotValidateQueryParameter_invalidMinConstraint() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(request.parameters()).thenReturn(parameters);
@@ -154,7 +150,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateQueryParameter_multipleRules() {
+    void shouldValidateQueryParameter_multipleRules() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("80"));
@@ -196,7 +192,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidatePathParameter_el_Rule() {
+    void shouldValidatePathParameter_el_Rule() {
         // Prepare inbound request
         when(request.pathInfo()).thenReturn("/fr");
 
@@ -224,7 +220,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateQueryParameter_RuleWithParamsContainsNull() {
+    void shouldValidateQueryParameter_RuleWithParamsContainsNull() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("80"));
@@ -253,7 +249,7 @@ public class RequestValidationPolicyTest {
         verify(policyChain).doNext(request, response);
     }
 
-    public Rule prepareRule(String input, String[] params, ConstraintType constraintType) {
+    Rule prepareRule(String input, String[] params, ConstraintType constraintType) {
         Rule rule = new Rule();
         rule.setInput(input);
         Constraint constraint = new Constraint();
@@ -264,7 +260,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateTheOrderOfViolationsWhenUsingMultipleRules() {
+    void shouldValidateTheOrderOfViolationsWhenUsingMultipleRules() {
         final String RULE_VALUE = "{#request.headers['my-header']}";
         final String PATTERN = "^[0-9a-fA-F]{32}\\z";
 
@@ -316,7 +312,7 @@ public class RequestValidationPolicyTest {
                         .forEach(ruleMapEntry -> {
                             ConstraintValidator validator = ruleMapEntry.getValue();
                             String violation = violations.pollFirst();
-                            Assert.assertTrue(Pattern.matches(validatorRegexMap.get(validator.getClass()), violation));
+                            assertThat(Pattern.matches(validatorRegexMap.get(validator.getClass()), violation)).isTrue();
                         });
 
                     return result.statusCode() == HttpStatusCode.BAD_REQUEST_400;
@@ -325,7 +321,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateQueryParameter_NotRequiredAndNotPresent() {
+    void shouldValidateQueryParameter_NotRequiredAndNotPresent() {
         // Prepare inbound request
         when(request.parameters()).thenReturn(mock(MultiValueMap.class));
 
@@ -355,7 +351,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldNotValidateQueryParameter_RequiredAndNotPresent() {
+    void shouldNotValidateQueryParameter_RequiredAndNotPresent() {
         // Prepare inbound request
         when(request.parameters()).thenReturn(mock(MultiValueMap.class));
 
@@ -385,7 +381,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateQueryParameter_ValidPatternNotRequiredAndPresent() {
+    void shouldValidateQueryParameter_ValidPatternNotRequiredAndPresent() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("myvalue"));
@@ -417,7 +413,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateQueryParameter_ValidPatternRequiredAndPresent() {
+    void shouldValidateQueryParameter_ValidPatternRequiredAndPresent() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("myvalue"));
@@ -449,7 +445,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldNotValidateQueryParameter_NotValidPatternNotRequiredAndPresent() {
+    void shouldNotValidateQueryParameter_NotValidPatternNotRequiredAndPresent() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("my1value"));
@@ -481,7 +477,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldNotValidateQueryParameter_NotValidPatternRequiredAndPresent() {
+    void shouldNotValidateQueryParameter_NotValidPatternRequiredAndPresent() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("my1value"));
@@ -513,7 +509,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldNotValidateQueryParameter_RuleNotRequiredAndEmptyParameter() {
+    void shouldNotValidateQueryParameter_RuleNotRequiredAndEmptyParameter() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList(""));
@@ -545,7 +541,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateQueryParameter_inENUM() {
+    void shouldValidateQueryParameter_inENUM() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("One"));
@@ -575,7 +571,7 @@ public class RequestValidationPolicyTest {
     }
 
     @Test
-    public void shouldValidateQueryParameter_outENUM() {
+    void shouldValidateQueryParameter_outENUM() {
         // Prepare inbound request
         MultiValueMap<String, String> parameters = mock(MultiValueMap.class);
         when(parameters.get("my-param")).thenReturn(Collections.singletonList("Three"));

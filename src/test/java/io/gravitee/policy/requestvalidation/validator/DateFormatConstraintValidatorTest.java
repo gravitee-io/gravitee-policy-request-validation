@@ -15,44 +15,41 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author David BRASSELY (david.brassely at graviteesource.com)
- * @author GraviteeSource Team
- */
-public class DateFormatConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class DateFormatConstraintValidatorTest {
 
     @Test
-    public void shouldNotValidate_nullValue() {
+    void shouldNotValidate_nullValue() {
         DateFormatConstraintValidator validator = new DateFormatConstraintValidator();
         validator.initialize("dd/MM/yyyy");
         boolean valid = validator.isValid(null);
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_doesNotRespectPattern() {
+    void shouldNotValidate_doesNotRespectPattern() {
         DateFormatConstraintValidator validator = new DateFormatConstraintValidator();
         validator.initialize("dd/MM/yyyy");
         boolean valid = validator.isValid("31/20/19991");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldValidate_simpleFormat() {
+    void shouldValidate_simpleFormat() {
         DateFormatConstraintValidator validator = new DateFormatConstraintValidator();
         validator.initialize("dd/MM/yyyy");
         boolean valid = validator.isValid("29/02/2012");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 
     @Test
-    public void shouldValidate_complexFormat() {
+    void shouldValidate_complexFormat() {
         DateFormatConstraintValidator validator = new DateFormatConstraintValidator();
         validator.initialize("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         boolean valid = validator.isValid("2001-07-04T12:08:56.235-0700");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 }

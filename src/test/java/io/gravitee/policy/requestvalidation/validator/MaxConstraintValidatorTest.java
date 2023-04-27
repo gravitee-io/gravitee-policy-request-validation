@@ -15,48 +15,45 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
 
-/**
- * @author David BRASSELY (david.brassely at graviteesource.com)
- * @author GraviteeSource Team
- */
-public class MaxConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class MaxConstraintValidatorTest {
 
     @Test
-    public void shouldNotValidate_invalidValue() {
+    void shouldNotValidate_invalidValue() {
         MaxConstraintValidator validator = new MaxConstraintValidator();
         validator.initialize("123");
 
         boolean valid = validator.isValid("12.d34");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_invalidMaxValue() {
+    void shouldNotValidate_invalidMaxValue() {
         MaxConstraintValidator validator = new MaxConstraintValidator();
         validator.initialize("123.invalid");
 
         boolean valid = validator.isValid("12.34");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldValidate() {
+    void shouldValidate() {
         MaxConstraintValidator validator = new MaxConstraintValidator();
         validator.initialize("123");
 
         boolean valid = validator.isValid("12.34");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 
     @Test
-    public void shouldNotValidate() {
+    void shouldNotValidate() {
         MaxConstraintValidator validator = new MaxConstraintValidator();
         validator.initialize("123");
 
         boolean valid = validator.isValid("1243");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 }

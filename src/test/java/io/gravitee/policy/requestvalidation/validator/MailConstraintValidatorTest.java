@@ -15,52 +15,49 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
 
-/**
- * @author David BRASSELY (david.brassely at graviteesource.com)
- * @author GraviteeSource Team
- */
-public class MailConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class MailConstraintValidatorTest {
 
     @Test
-    public void shouldNotValidate_nullValue() {
+    void shouldNotValidate_nullValue() {
         MailConstraintValidator validator = new MailConstraintValidator();
 
         boolean valid = validator.isValid(null);
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_emptyValue() {
+    void shouldNotValidate_emptyValue() {
         MailConstraintValidator validator = new MailConstraintValidator();
 
         boolean valid = validator.isValid("");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_badEmail() {
+    void shouldNotValidate_badEmail() {
         MailConstraintValidator validator = new MailConstraintValidator();
 
         boolean valid = validator.isValid("contact@graviteesource");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldValidate() {
+    void shouldValidate() {
         MailConstraintValidator validator = new MailConstraintValidator();
 
         boolean valid = validator.isValid("contact@graviteesource.com");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 
     @Test
-    public void shouldValidateEncoded() {
+    void shouldValidateEncoded() {
         MailConstraintValidator validator = new MailConstraintValidator();
 
         boolean valid = validator.isValid("contact%40graviteesource.com");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 }

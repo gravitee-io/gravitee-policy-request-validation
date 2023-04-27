@@ -15,48 +15,45 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
 
-/**
- * @author David BRASSELY (david.brassely at graviteesource.com)
- * @author GraviteeSource Team
- */
-public class MinConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class MinConstraintValidatorTest {
 
     @Test
-    public void shouldNotValidate_invalidValue() {
+    void shouldNotValidate_invalidValue() {
         MinConstraintValidator validator = new MinConstraintValidator();
         validator.initialize("123");
 
         boolean valid = validator.isValid("12.d34");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_invalidMaxValue() {
+    void shouldNotValidate_invalidMaxValue() {
         MinConstraintValidator validator = new MinConstraintValidator();
         validator.initialize("123.invalid");
 
         boolean valid = validator.isValid("12.34");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate() {
+    void shouldNotValidate() {
         MinConstraintValidator validator = new MinConstraintValidator();
         validator.initialize("123");
 
         boolean valid = validator.isValid("12.34");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldValidate() {
+    void shouldValidate() {
         MinConstraintValidator validator = new MinConstraintValidator();
         validator.initialize("123");
 
         boolean valid = validator.isValid("1243");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 }

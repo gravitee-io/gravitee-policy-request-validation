@@ -15,36 +15,33 @@
  */
 package io.gravitee.policy.requestvalidation.validator;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
 
-/**
- * @author David BRASSELY (david.brassely at graviteesource.com)
- * @author GraviteeSource Team
- */
-public class NotNullConstraintValidatorTest {
+import org.junit.jupiter.api.Test;
+
+class NotNullConstraintValidatorTest {
 
     @Test
-    public void shouldNotValidate_nullValue() {
+    void shouldNotValidate_nullValue() {
         NotNullConstraintValidator validator = new NotNullConstraintValidator();
 
         boolean valid = validator.isValid(null);
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldNotValidate_emptyValue() {
+    void shouldNotValidate_emptyValue() {
         NotNullConstraintValidator validator = new NotNullConstraintValidator();
 
         boolean valid = validator.isValid("");
-        Assert.assertFalse(valid);
+        assertThat(valid).isFalse();
     }
 
     @Test
-    public void shouldValidate() {
+    void shouldValidate() {
         NotNullConstraintValidator validator = new NotNullConstraintValidator();
 
         boolean valid = validator.isValid("sample");
-        Assert.assertTrue(valid);
+        assertThat(valid).isTrue();
     }
 }
