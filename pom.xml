@@ -41,7 +41,10 @@
         <gravitee-common.version>1.18.0</gravitee-common.version>
         <swagger-parser.version>2.0.14</swagger-parser.version>
 
-        <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
+        <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
+        <prettier-maven-plugin.version>0.19</prettier-maven-plugin.version>
+        <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
+
         <!-- Property used by the publication job in CI-->
         <publish-folder-path>graviteeio-apim/plugins/policies</publish-folder-path>
     </properties>
@@ -143,7 +146,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>${properties-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>initialize</phase>
@@ -182,10 +185,9 @@
             <plugin>
                 <groupId>com.hubspot.maven.plugins</groupId>
                 <artifactId>prettier-maven-plugin</artifactId>
-                <version>0.17</version>
+                <version>${prettier-maven-plugin.version}</version>
                 <configuration>
-                    <nodeVersion>12.13.0</nodeVersion>
-                    <prettierJavaVersion>1.6.1</prettierJavaVersion>
+                    <prettierJavaVersion>2.1.0</prettierJavaVersion>
                 </configuration>
                 <executions>
                     <execution>
