@@ -147,7 +147,18 @@ public class RequestValidationPolicy {
         LinkedHashSet<ConstraintViolation> violations = new LinkedHashSet<>();
         for (Rule rule : configuration.getRules()) {
             TemplateEngine templateEngine = executionContext.getTemplateEngine();
-            String input = templateEngine.getValue(rule.getInput(), String.class);
+            String input = null;
+            try {
+                input = templateEngine.eval(rule.getInput(), String.class).blockingGet();
+            } catch (Exception e) {
+                ConstraintViolation constraintViolation = new ConstraintViolation();
+                constraintViolation.setMessage(
+                    "Unable to evaluate expression: " + rule.getInput() + " -> It might be related to an invalid request body"
+                );
+                violations.add(constraintViolation);
+                return violations;
+            }
+
             if (rule.getIsRequired() || input != null) {
                 Validator validator = new ExpressionBasedValidator(executionContext.getTemplateEngine());
                 ConstraintViolation constraintViolation = validator.validate(rule.getInput(), new Constraint(rule.getConstraint()));

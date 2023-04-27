@@ -40,6 +40,7 @@
         <gravitee-policy-api.version>1.11.0</gravitee-policy-api.version>
         <gravitee-common.version>2.1.0</gravitee-common.version>
         <swagger-parser.version>2.1.11</swagger-parser.version>
+        <gravitee-gateway.version>3.20.3</gravitee-gateway.version>
 
         <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
         <prettier-maven-plugin.version>0.19</prettier-maven-plugin.version>
@@ -143,6 +144,13 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.gravitee.apim.gateway</groupId>
+            <artifactId>gravitee-apim-gateway-tests-sdk</artifactId>
+            <version>${gravitee-gateway.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
