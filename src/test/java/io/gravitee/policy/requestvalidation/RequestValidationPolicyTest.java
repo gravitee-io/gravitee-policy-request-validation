@@ -15,7 +15,6 @@
  */
 package io.gravitee.policy.requestvalidation;
 
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.*;
 
 import io.gravitee.common.http.HttpStatusCode;

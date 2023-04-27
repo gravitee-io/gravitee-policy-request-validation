@@ -30,16 +30,16 @@
     <parent>
         <groupId>io.gravitee</groupId>
         <artifactId>gravitee-parent</artifactId>
-        <version>20.0</version>
+        <version>21.0.0</version>
     </parent>
 
     <properties>
-        <gravitee-bom.version>1.0</gravitee-bom.version>
-        <gravitee-gateway-api.version>1.31.0</gravitee-gateway-api.version>
-        <gravitee-expression-language.version>1.8.0</gravitee-expression-language.version>
-        <gravitee-policy-api.version>1.10.0</gravitee-policy-api.version>
-        <gravitee-common.version>1.18.0</gravitee-common.version>
-        <swagger-parser.version>2.0.14</swagger-parser.version>
+        <gravitee-bom.version>4.0.3</gravitee-bom.version>
+        <gravitee-gateway-api.version>2.0.1</gravitee-gateway-api.version>
+        <gravitee-expression-language.version>2.0.1</gravitee-expression-language.version>
+        <gravitee-policy-api.version>1.11.0</gravitee-policy-api.version>
+        <gravitee-common.version>2.1.0</gravitee-common.version>
+        <swagger-parser.version>2.1.11</swagger-parser.version>
 
         <maven-assembly-plugin.version>3.5.0</maven-assembly-plugin.version>
         <prettier-maven-plugin.version>0.19</prettier-maven-plugin.version>
