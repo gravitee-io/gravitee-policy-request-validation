@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.13.0...1.13.1) (2023-04-28)
+
+
+### Bug Fixes
+
+* properly return a constraint violation in case of malformed input ([52049ea](https://github.com/gravitee-io/gravitee-policy-request-validation/commit/52049ea9b055ea7a2ae074b35d980ab16a1a3b49))
+
 # [1.13.0](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.12.0...1.13.0) (2022-01-21)
 
 
