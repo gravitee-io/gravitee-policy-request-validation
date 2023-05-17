@@ -149,7 +149,9 @@ public class RequestValidationPolicy {
             TemplateEngine templateEngine = executionContext.getTemplateEngine();
             String input = null;
             try {
-                input = templateEngine.eval(rule.getInput(), String.class).blockingGet();
+                // TODO: Use the non deprecated method, but it requires APIM 3.20+ to have an up to date version of the `gravitee-node`
+                // to ensure the correct version of `gravitee-expression-language` + `rxjava` are provided.
+                input = templateEngine.getValue(rule.getInput(), String.class);
             } catch (Exception e) {
                 ConstraintViolation constraintViolation = new ConstraintViolation();
                 constraintViolation.setMessage(
