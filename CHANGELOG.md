@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.13.1...1.13.2) (2023-05-17)
+
+
+### Bug Fixes
+
+* do not use reactive EL method to ensure compatibility with < APIM 3.20 ([ac1b204](https://github.com/gravitee-io/gravitee-policy-request-validation/commit/ac1b204db4734c5e157ffc17f57915ad680508f5))
+
 ## [1.13.1](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.13.0...1.13.1) (2023-04-28)
 
 
