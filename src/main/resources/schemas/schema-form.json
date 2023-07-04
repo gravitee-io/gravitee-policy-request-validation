@@ -118,9 +118,54 @@
         }
       },
       "gioConfig": {
-        "banner": {
-          "title": "HTTP Status Code send to the consumer in case of validation issues.",
-          "text": "<ul><li>100 - CONTINUE</li><li>101 - SWITCHING_PROTOCOLS</li><li>102 - PROCESSING</li><li>200 - OK</li><li>201 - CREATED</li><li>202 - ACCEPTED</li><li>203 - NON_AUTHORITATIVE_INFORMATION</li><li>204 - NO_CONTENT</li><li>205 - RESET_CONTENT</li><li>206 - PARTIAL_CONTENT</li><li>207 - MULTI_STATUS</li><li>300 - MULTIPLE_CHOICES</li><li>301 - MOVED_PERMANENTLY</li><li>302 - FOUND OR MOVED_TEMPORARILY</li><li>303 - SEE_OTHER</li><li>304 - NOT_MODIFIED</li><li>305 - USE_PROXY</li><li>307 - TEMPORARY_REDIRECT</li><li>400 - BAD_REQUEST</li><li>401 - UNAUTHORIZED</li><li>402 - PAYMENT_REQUIRED</li><li>403 - FORBIDDEN</li><li>404 - NOT_FOUND</li><li>405 - METHOD_NOT_ALLOWED</li><li>406 - NOT_ACCEPTABLE</li><li>407 - PROXY_AUTHENTICATION_REQUIRED</li><li>408 - REQUEST_TIMEOUT</li><li>409 - CONFLICT</li><li>410 - GONE</li><li>411 - LENGTH_REQUIRED</li><li>412 - PRECONDITION_FAILED</li><li>413 - REQUEST_ENTITY_TOO_LARGE</li><li>414 - REQUEST_URI_TOO_LONG</li><li>415 - UNSUPPORTED_MEDIA_TYPE</li><li>416 - REQUESTED_RANGE_NOT_SATISFIABLE</li><li>417 - EXPECTATION_FAILED</li><li>422 - UNPROCESSABLE_ENTITY</li><li>423 - LOCKED</li><li>424 - FAILED_DEPENDENCY</li><li>429 - TOO_MANY_REQUESTS</li><li>500 - INTERNAL_SERVER_ERROR</li><li>501 - NOT_IMPLEMENTED</li><li>502 - BAD_GATEWAY</li><li>503 - SERVICE_UNAVAILABLE</li><li>504 - GATEWAY_TIMEOUT</li><li>505 - HTTP_VERSION_NOT_SUPPORTED</li><li>507 - INSUFFICIENT_STORAG</li></ul>"
+        "enumLabelMap": {
+          "100": "100 - CONTINUE",
+          "101": "101 - SWITCHING_PROTOCOLS",
+          "102": "102 - PROCESSING",
+          "200": "200 - OK",
+          "201": "201 - CREATED",
+          "202": "202 - ACCEPTED",
+          "203": "203 - NON_AUTHORITATIVE_INFORMATION",
+          "204": "204 - NO_CONTENT",
+          "205": "205 - RESET_CONTENT",
+          "206": "206 - PARTIAL_CONTENT",
+          "207": "207 - MULTI_STATUS",
+          "300": "300 - MULTIPLE_CHOICES",
+          "301": "301 - MOVED_PERMANENTLY",
+          "302": "302 - FOUND OR MOVED_TEMPORARILY",
+          "303": "303 - SEE_OTHER",
+          "304": "304 - NOT_MODIFIED",
+          "305": "305 - USE_PROXY",
+          "307": "307 - TEMPORARY_REDIRECT",
+          "400": "400 - BAD_REQUEST",
+          "401": "401 - UNAUTHORIZED",
+          "402": "402 - PAYMENT_REQUIRED",
+          "403": "403 - FORBIDDEN",
+          "404": "404 - NOT_FOUND",
+          "405": "405 - METHOD_NOT_ALLOWED",
+          "406": "406 - NOT_ACCEPTABLE",
+          "407": "407 - PROXY_AUTHENTICATION_REQUIRED",
+          "408": "408 - REQUEST_TIMEOUT",
+          "409": "409 - CONFLICT",
+          "410": "410 - GONE",
+          "411": "411 - LENGTH_REQUIRED",
+          "412": "412 - PRECONDITION_FAILED",
+          "413": "413 - REQUEST_ENTITY_TOO_LARGE",
+          "414": "414 - REQUEST_URI_TOO_LONG",
+          "415": "415 - UNSUPPORTED_MEDIA_TYPE",
+          "416": "416 - REQUESTED_RANGE_NOT_SATISFIABLE",
+          "417": "417 - EXPECTATION_FAILED",
+          "422": "422 - UNPROCESSABLE_ENTITY",
+          "423": "423 - LOCKED",
+          "424": "424 - FAILED_DEPENDENCY",
+          "429": "429 - TOO_MANY_REQUESTS",
+          "500": "500 - INTERNAL_SERVER_ERROR",
+          "501": "501 - NOT_IMPLEMENTED",
+          "502": "502 - BAD_GATEWAY",
+          "503": "503 - SERVICE_UNAVAILABLE",
+          "504": "504 - GATEWAY_TIMEOUT",
+          "505": "505 - HTTP_VERSION_NOT_SUPPORTED",
+          "507": "507 - INSUFFICIENT_STORAGE"
         }
       }
     },
@@ -169,9 +214,15 @@
                   }
                 },
                 "gioConfig": {
-                  "banner": {
-                    "title": "Type",
-                    "text": "The constraint rule to apply to the field value.<ul><li>NOT_NULL: Field value is required</li><li>MIN: Field number value is greater or equals than parameter</li><li>MAX: Field number value is lower or equals than parameter</li><li>MAIL: Field value is a valid email</li><li>PATTERN: Field value is valid according to the pattern parameter</li><li>DATE: Field value is valid according to the date format parameter</li><li>SIZE: Field value length is between min and max parameters</li><li>ENUM: Field value included in ENUM</li><ul/>"
+                  "enumLabelMap": {
+                    "NOT_NULL": "NOT_NULL: Field value is required",
+                    "MIN": "MIN: Field number value is greater or equals than parameter",
+                    "MAX": "MAX: Field number value is lower or equals than parameter",
+                    "MAIL": "MAIL: Field value is a valid email",
+                    "PATTERN": "PATTERN: Field value is valid according to the pattern parameter",
+                    "DATE": "DATE: Field value is valid according to the date format parameter",
+                    "SIZE": "Field value length is between min and max parameters",
+                    "ENUM": "ENUM: Field value included in ENUM"
                   }
                 }
               },
