@@ -42,6 +42,13 @@ Constraint rules can be:
 
 By default, if none of the rules can be validated, the policy returns a `400` status code.
 
+== Compatibility with APIM
+
+|===
+| Plugin version | APIM version
+| 1.x            | All supported versions
+|===
+
 == Configuration
 
 |===
