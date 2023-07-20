@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.14.0...1.14.1) (2023-07-20)
+
+
+### Bug Fixes
+
+* update policy description ([38f8b56](https://github.com/gravitee-io/gravitee-policy-request-validation/commit/38f8b5678b375c027631c7012de696a2094f7520))
+
 # [1.14.0](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.13.2...1.14.0) (2023-07-05)
 
 
