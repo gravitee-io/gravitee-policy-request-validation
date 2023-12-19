@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.14.1...1.15.0) (2023-12-19)
+
+
+### Features
+
+* enable policy on REQUEST phase for message APIs ([9c60d73](https://github.com/gravitee-io/gravitee-policy-request-validation/commit/9c60d731f50cb6993377ddb58bdb56b2dd992aee)), closes [gravitee-io/issues#9430](https://github.com/gravitee-io/issues/issues/9430)
+
 ## [1.14.1](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.14.0...1.14.1) (2023-07-20)
 
 
