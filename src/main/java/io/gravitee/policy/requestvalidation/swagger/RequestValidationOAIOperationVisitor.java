@@ -53,40 +53,36 @@ public class RequestValidationOAIOperationVisitor implements OAIOperationVisitor
         List<Rule> rules = new ArrayList<>();
 
         if (parameters != null && !parameters.isEmpty()) {
-            parameters.forEach(
-                new Consumer<Parameter>() {
-                    @Override
-                    public void accept(Parameter parameter) {
-                        String in = parameter.getIn();
-                        switch (in) {
-                            case "query":
-                                Rule rule = new Rule();
-                                rule.setInput("{#request.params['" + parameter.getName() + "']}");
+            parameters.forEach(parameter -> {
+                if (parameter.getRequired()) {
+                    String in = parameter.getIn();
+                    switch (in) {
+                        case "query":
+                            Rule rule = new Rule();
+                            rule.setInput("{#request.params['" + parameter.getName() + "']}");
 
-                                Constraint constraint = new Constraint();
-                                constraint.setType(ConstraintType.NOT_NULL);
-                                constraint.setMessage(parameter.getName() + " query parameter is required");
+                            Constraint constraint = new Constraint();
+                            constraint.setType(ConstraintType.NOT_NULL);
+                            constraint.setMessage(parameter.getName() + " query parameter is required");
 
-                                rule.setConstraint(constraint);
+                            rule.setConstraint(constraint);
+                            rules.add(rule);
+                            break;
+                        case "header":
+                            Rule headerRule = new Rule();
+                            headerRule.setInput("{#request.headers['" + parameter.getName() + "'][0]}");
 
-                                rules.add(rule);
-                                break;
-                            case "header":
-                                Rule headerRule = new Rule();
-                                headerRule.setInput("{#request.headers['" + parameter.getName() + "'][0]}");
+                            Constraint headerConstraint = new Constraint();
+                            headerConstraint.setType(ConstraintType.NOT_NULL);
+                            headerConstraint.setMessage(parameter.getName() + " header is required");
 
-                                Constraint headerConstraint = new Constraint();
-                                headerConstraint.setType(ConstraintType.NOT_NULL);
-                                headerConstraint.setMessage(parameter.getName() + " header is required");
+                            headerRule.setConstraint(headerConstraint);
 
-                                headerRule.setConstraint(headerConstraint);
-
-                                rules.add(headerRule);
-                                break;
-                        }
+                            rules.add(headerRule);
+                            break;
                     }
                 }
-            );
+            });
         }
 
         if (!rules.isEmpty()) {
