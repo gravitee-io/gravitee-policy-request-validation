@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.15.0...1.15.1) (2024-02-15)
+
+
+### Bug Fixes
+
+* add NOT_NULL constraint only if required ([134a07e](https://github.com/gravitee-io/gravitee-policy-request-validation/commit/134a07e33e50c5248d61a54ba02ed4c8dc6ef142))
+
 # [1.15.0](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.14.1...1.15.0) (2023-12-19)
 
 
