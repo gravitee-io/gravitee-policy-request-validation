@@ -40,7 +40,7 @@
         <gravitee-policy-api.version>1.11.0</gravitee-policy-api.version>
         <gravitee-common.version>2.3.0</gravitee-common.version>
         <swagger-parser.version>2.1.21</swagger-parser.version>
-        <gravitee-gateway.version>3.20.31</gravitee-gateway.version>
+        <gravitee-gateway.version>3.20.32</gravitee-gateway.version>
 
         <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
