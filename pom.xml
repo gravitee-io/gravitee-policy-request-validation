@@ -42,7 +42,7 @@
         <swagger-parser.version>2.1.36</swagger-parser.version>
         <gravitee-gateway.version>3.20.32</gravitee-gateway.version>
 
-        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+        <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
         <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
         <properties-maven-plugin.version>1.2.1</properties-maven-plugin.version>
 
