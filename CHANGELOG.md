@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.15.1...1.16.0) (2026-05-08)
+
+
+### Features
+
+* make policy available for mcp proxy on request phase ([842dfc3](https://github.com/gravitee-io/gravitee-policy-request-validation/commit/842dfc36f8eb1e4539e2c9008b4c3a858f3f8095))
+
 ## [1.15.1](https://github.com/gravitee-io/gravitee-policy-request-validation/compare/1.15.0...1.15.1) (2024-02-15)
 
 
