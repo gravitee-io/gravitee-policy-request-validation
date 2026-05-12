@@ -144,10 +144,9 @@ class RequestValidationPolicyIntegrationTest extends AbstractPolicyTest<RequestV
                 JsonObject body = new JsonObject(bufferBody.toString());
                 assertThat(body.getString("message")).isEqualTo("Request is not valid according to constraint rules");
                 assertThat(body.getJsonArray("constraints").size()).isEqualTo(1);
-                assertThat(body.getJsonArray("constraints").getString(0))
-                    .isEqualTo(
-                        "Unable to evaluate expression: {#jsonPath(#request.content, '$.firstName')} -> It might be related to an invalid request body"
-                    );
+                assertThat(body.getJsonArray("constraints").getString(0)).isEqualTo(
+                    "Unable to evaluate expression: {#jsonPath(#request.content, '$.firstName')} -> It might be related to an invalid request body"
+                );
                 return true;
             })
             .assertNoErrors();
