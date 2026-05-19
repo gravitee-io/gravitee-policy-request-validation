@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2015 The Gravitee team (http://gravitee.io)
+    Copyright © 2015 The Gravitee team (http://gravitee.io)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-            http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,17 +30,17 @@
     <parent>
         <groupId>io.gravitee</groupId>
         <artifactId>gravitee-parent</artifactId>
-        <version>21.0.1</version>
+        <version>24.0.2</version>
     </parent>
 
     <properties>
-        <gravitee-bom.version>4.0.3</gravitee-bom.version>
-        <gravitee-gateway-api.version>2.0.1</gravitee-gateway-api.version>
-        <gravitee-expression-language.version>2.0.1</gravitee-expression-language.version>
+        <gravitee-bom.version>8.3.56</gravitee-bom.version>
+        <gravitee-gateway-api.version>5.1.1</gravitee-gateway-api.version>
+        <gravitee-expression-language.version>4.3.0</gravitee-expression-language.version>
         <gravitee-policy-api.version>1.11.0</gravitee-policy-api.version>
-        <gravitee-common.version>2.3.0</gravitee-common.version>
+        <gravitee-common.version>4.9.1</gravitee-common.version>
         <swagger-parser.version>2.1.42</swagger-parser.version>
-        <gravitee-gateway.version>3.20.32</gravitee-gateway.version>
+        <gravitee-gateway.version>4.6.24</gravitee-gateway.version>
 
         <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version>
         <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
