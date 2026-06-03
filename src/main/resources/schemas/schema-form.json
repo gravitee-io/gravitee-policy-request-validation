@@ -13,7 +13,7 @@
         },
         "status": {
             "title": "Status Code",
-            "description": "HTTP Status Code send to the consumer in case of validation issues.",
+            "description": "HTTP Status Code sent to the consumer in case of validation issues.",
             "type": "string",
             "default": "400",
             "enum": [
