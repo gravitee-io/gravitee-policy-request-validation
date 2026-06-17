@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2015 The Gravitee team (http://gravitee.io)
+/*
+ * Copyright © 2015 The Gravitee team (http://gravitee.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -144,10 +144,9 @@ class RequestValidationPolicyIntegrationTest extends AbstractPolicyTest<RequestV
                 JsonObject body = new JsonObject(bufferBody.toString());
                 assertThat(body.getString("message")).isEqualTo("Request is not valid according to constraint rules");
                 assertThat(body.getJsonArray("constraints").size()).isEqualTo(1);
-                assertThat(body.getJsonArray("constraints").getString(0))
-                    .isEqualTo(
-                        "Unable to evaluate expression: {#jsonPath(#request.content, '$.firstName')} -> It might be related to an invalid request body"
-                    );
+                assertThat(body.getJsonArray("constraints").getString(0)).isEqualTo(
+                    "Unable to evaluate expression: {#jsonPath(#request.content, '$.firstName')} -> It might be related to an invalid request body"
+                );
                 return true;
             })
             .assertNoErrors();
