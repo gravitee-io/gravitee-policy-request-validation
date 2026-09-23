@@ -17,36 +17,36 @@
 version: "3"
 
 env:
-  APIM_GW_DISTRIBUTION_PATH: "{{.APIM_GW_DISTRIBUTION_PATH }}"
-  APIM_MAPI_DISTRIBUTION_PATH: "{{.APIM_MAPI_DISTRIBUTION_PATH }}"
+    APIM_GW_DISTRIBUTION_PATH: "{{.APIM_GW_DISTRIBUTION_PATH }}"
+    APIM_MAPI_DISTRIBUTION_PATH: "{{.APIM_MAPI_DISTRIBUTION_PATH }}"
 
 tasks:
-  build:
-    desc: "Build"
-    cmds:
-      - mvn clean install -DskipTests -Dskip.validation
+    build:
+        desc: "Build"
+        cmds:
+            - mvn clean install -DskipTests -Dskip.validation
 
-  copy:
-    desc: "Copy policy"
-    cmds:
-      - cp target/gravitee-policy-request-validation-*.zip ${APIM_GW_DISTRIBUTION_PATH}/plugins
-      - cp target/gravitee-policy-request-validation-*.zip ${APIM_MAPI_DISTRIBUTION_PATH}/plugins
+    copy:
+        desc: "Copy policy"
+        cmds:
+            - cp target/gravitee-policy-request-validation-*.zip ${APIM_GW_DISTRIBUTION_PATH}/plugins
+            - cp target/gravitee-policy-request-validation-*.zip ${APIM_MAPI_DISTRIBUTION_PATH}/plugins
 
-  clean:
-    desc: "Clean"
-    cmds:
-      - rm -f ${APIM_GW_DISTRIBUTION_PATH}/plugins/gravitee-policy-request-validation-*.zip
-      - rm -f ${APIM_MAPI_DISTRIBUTION_PATH}/plugins/gravitee-policy-request-validation-*.zip
+    clean:
+        desc: "Clean"
+        cmds:
+            - rm -f ${APIM_GW_DISTRIBUTION_PATH}/plugins/gravitee-policy-request-validation-*.zip
+            - rm -f ${APIM_MAPI_DISTRIBUTION_PATH}/plugins/gravitee-policy-request-validation-*.zip
 
-  lint:
-    desc: "Lint"
-    cmds:
-      - mvn prettier:write
+    lint:
+        desc: "Lint"
+        cmds:
+            - mvn prettier:write
 
-  all:
-    desc: "Clean, Build and copy"
-    cmds:
-      - task: clean
-      - task: lint
-      - task: build
-      - task: copy
+    all:
+        desc: "Clean, Build and copy"
+        cmds:
+            - task: clean
+            - task: lint
+            - task: build
+            - task: copy
