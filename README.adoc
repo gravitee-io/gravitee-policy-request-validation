@@ -42,11 +42,14 @@ Constraint rules can be:
 
 By default, if none of the rules can be validated, the policy returns a `400` status code.
 
-== Compatibility with APIM
+== Compatibility matrix
 
 |===
-| Plugin version | APIM version
-| 1.x            | All supported versions
+| Plugin version   | APIM             | Java version
+
+| 2.x              | 4.9.x to latest  | 21
+| 1.12.x to 1.16.x | 3.18.x to latest | 11
+| 1.0.x to 1.11.x  | 3.x              | 8
 |===
 
 == Configuration
