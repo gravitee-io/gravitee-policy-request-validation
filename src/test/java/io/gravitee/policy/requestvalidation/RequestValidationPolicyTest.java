@@ -300,24 +300,23 @@ class RequestValidationPolicyTest {
         policy.onRequest(request, response, executionContext, policyChain);
 
         // Check results
-        verify(policyChain)
-            .failWith(
-                argThat(result -> {
-                    ArrayList<String> violationsTemp = (ArrayList<String>) result.parameters().get("violations");
-                    ArrayDeque<String> violations = new ArrayDeque<>(violationsTemp);
+        verify(policyChain).failWith(
+            argThat(result -> {
+                ArrayList<String> violationsTemp = (ArrayList<String>) result.parameters().get("violations");
+                ArrayDeque<String> violations = new ArrayDeque<>(violationsTemp);
 
-                    rulesMap
-                        .entrySet()
-                        .stream()
-                        .forEach(ruleMapEntry -> {
-                            ConstraintValidator validator = ruleMapEntry.getValue();
-                            String violation = violations.pollFirst();
-                            assertThat(Pattern.matches(validatorRegexMap.get(validator.getClass()), violation)).isTrue();
-                        });
+                rulesMap
+                    .entrySet()
+                    .stream()
+                    .forEach(ruleMapEntry -> {
+                        ConstraintValidator validator = ruleMapEntry.getValue();
+                        String violation = violations.pollFirst();
+                        assertThat(Pattern.matches(validatorRegexMap.get(validator.getClass()), violation)).isTrue();
+                    });
 
-                    return result.statusCode() == HttpStatusCode.BAD_REQUEST_400;
-                })
-            );
+                return result.statusCode() == HttpStatusCode.BAD_REQUEST_400;
+            })
+        );
     }
 
     @Test
